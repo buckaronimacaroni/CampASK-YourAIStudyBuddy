@@ -1,0 +1,165 @@
+/* General card style */
+.section-grid {
+  display: grid;
+  gap: 2.2rem;
+  justify-content: center;
+  margin: 0 auto 48px auto;
+  clear: both;
+}
+
+section {
+  margin-bottom: 56px;
+}
+
+/* 1st section: Schools (4 top, 3 bottom, all centered, uniform width for this section) */
+/* 1st section: Schools (3,3,1 layout, all centered, uniform width for this section) */
+.section-grid.schools {
+  grid-template-columns: repeat(3, 260px);
+  justify-content: center;
+}
+.section-grid.schools > * {
+  width: 260px;
+}
+/* Center the last row of 1 card */
+.section-grid.schools > :nth-child(7) {
+  grid-column: 2 / span 1;
+}
+.section-grid.schools {
+  justify-items: center;
+}
+@media (max-width: 900px) {
+  .section-grid.schools {
+    grid-template-columns: repeat(2, 260px);
+  }
+  .section-grid.schools > :nth-child(7) {
+    grid-column: 1 / span 1;
+  }
+}
+@media (max-width: 600px) {
+  .section-grid.schools {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+}
+
+/* 2nd section: RP Links (3 top, 2 bottom, uniform width for this section) */
+/* 2nd section: RP Links (evenly spaced, uniform width for this section) */
+.section-grid.links {
+  grid-template-columns: repeat(5, 1fr);
+  justify-content: center;
+  gap: 2.2rem;
+  max-width: 1700px;
+}
+.section-grid.links > * {
+  width: 100%;
+  min-width: 220px;
+  max-width: 320px;
+  margin: 0 auto;
+}
+.section-grid.links {
+  justify-items: center;
+}
+@media (max-width: 1200px) {
+  .section-grid.links {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 800px) {
+  .section-grid.links {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .section-grid.links {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+}
+
+/* 3rd section: Study Tools (4 top, 3 bottom, last card centered) */
+.section-grid.tools {
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 1000px;
+  margin: 0 auto 48px auto;
+  gap: 2.2rem;
+  justify-content: center;
+}
+.section-grid.tools > * {
+  min-width: 210px;
+  max-width: 260px;
+  margin: 0 auto;
+}
+.section-grid.tools > :nth-child(n+5) {
+  grid-column: span 1;
+}
+.section-grid.tools {
+  justify-items: center;
+}
+/* Center the last card if only one in the last row */
+.section-grid.tools > :nth-child(7) {
+  grid-column: 2 / span 2;
+}
+
+@media (max-width: 1100px) {
+  .section-grid.tools {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .section-grid.tools > :nth-child(7) {
+    grid-column: 2 / span 1;
+  }
+}
+@media (max-width: 700px) {
+  .section-grid.tools {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+  .section-grid.tools > * {
+    max-width: 90vw;
+  }
+  .section-grid.tools > :nth-child(7) {
+    grid-column: auto;
+  }
+}
+
+/* Card appearance */
+.card {
+  background: #f0f6ff;
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(37,99,235,0.08);
+  padding: 28px 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: box-shadow 0.2s;
+}
+.card:hover {
+  box-shadow: 0 8px 32px rgba(37,99,235,0.16);
+}
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #2563eb;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.card-desc {
+  font-size: 1rem;
+  color: #22223b;
+  margin-bottom: 18px;
+  text-align: center;
+}
+.card-btn {
+  background: linear-gradient(90deg, #2563eb 70%, #60a5fa 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 22px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.card-btn:hover {
+  background: #2563eb;
+}

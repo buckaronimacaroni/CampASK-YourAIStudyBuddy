@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RP's Study Buddy</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    :root {
+      --primary: #3b4a6b;
+      --primary-light: #7b8bbd;
+      --background: #e9ecf3;
+      --surface: #f5f6fa;
+      --text: #232946;
+      --shadow: 0 4px 16px rgba(59,74,107,0.08);
+    }
+    body {
+      background: var(--background);
+      color: var(--text);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 16px 32px 16px;
+    }
+    /* Remove .main-title-bg styling, not needed for banner */
+h1 {
+      width: 100vw;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      margin: 0;
+      text-align: center;
+      color: #fff;
+      font-size: 2.5rem;
+      letter-spacing: 1px;
+      background: var(--primary);
+      padding: 44px 0 36px 0;
+      border-radius: 0;
+      box-shadow: 0 6px 24px rgba(59,74,107,0.10);
+      font-weight: bold;
+      z-index: 1000;
+    }
+    section {
+      margin-bottom: 48px;
+    }
+    .section-title {
+      text-align: center;
+      color: var(--primary);
+      margin-bottom: 24px;
+      font-size: 1.6rem;
+      font-weight: bold;
+    }
+    /* Unified Card Grid Styling for All Sections */
+    .card-grid {
+      display: grid;
+      grid-auto-rows: 1fr;
+      gap: 24px;
+      justify-content: center;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 24px;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+
+    .school-grid,
+    .links-grid,
+    .tools-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        justify-content: center;
+    }
+
+    /* Center last row if not full (7 cards, 5 cards, etc.) */
+    .school-grid > .card:nth-child(7),
+    .tools-grid > .card:nth-child(7) {
+      grid-column: 2 / span 1;
+    }
+    .links-grid > .card:nth-child(4) {
+      grid-column: 2 / span 1;
+    }
+
+    @media (max-width: 900px) {
+      .school-grid,
+      .links-grid,
+      .tools-grid {
+        grid-template-columns: repeat(2, minmax(220px, 1fr));
+      }
+      .school-grid > .card:nth-child(7),
+      .tools-grid > .card:nth-child(7) {
+        grid-column: 1 / span 1;
+      }
+      .links-grid > .card:nth-child(4) {
+        grid-column: 1 / span 1;
+      }
+    }
+    @media (max-width: 600px) {
+      .card-grid,
+      .school-grid,
+      .links-grid,
+      .tools-grid {
+        grid-template-columns: 1fr;
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 28px 20px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 180px;
+      transition: box-shadow 0.2s;
+      margin: 0 auto;
+      max-width: 220px;
+      width: 100%;
+      position: relative;
+    }
+    .card:hover {
+      box-shadow: 0 8px 24px rgba(37,99,235,0.16);
+    }
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--primary);
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .card-desc {
+      font-size: 1rem;
+      color: #444;
+      margin-bottom: 18px;
+      text-align: center;
+    }
+    .card-btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      padding: 8px 22px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+      margin-top: auto;
+      align-self: center;
+    }
+    .card-btn:hover {
+      background: var(--primary-light);
+    }
+    /* Placeholder section */
+    .placeholder {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 40px 0;
+      text-align: center;
+      color: #888;
+      font-size: 1.2rem;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Back to Home Button -->
+  <a href="http://127.0.0.1:5500/index.html" style="
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 50px;
+    font-size: 16px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 9999;">
+    ← Back
+  </a>
+  <h1>RP's Study Buddy</h1>
+  <main style="padding-top: 140px;">
+
+    <!-- Section 1: Republic Polytechnic Schools -->
+    <section>
+      <div class="section-title">Republic Polytechnic Schools & Popular Topics</div>
+      <div class="card-grid school-grid">
+        <div class="card">
+          <div class="card-title">School of Applied Science (SAS)</div>
+          <div class="card-desc">Biotechnology, Environmental Science, Materials Science</div>
+        </div>
+        <div class="card">
+          <div class="card-title">School of Engineering (SEG)</div>
+          <div class="card-desc">Electrical, Mechanical, Aerospace, Sustainable Energy</div>
+        </div>
+        <div class="card">
+          <div class="card-title">School of Hospitality (SOH)</div>
+          <div class="card-desc">Hotel Management, Events, Culinary Arts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">School of Infocomm (SOI)</div>
+          <div class="card-desc">AI, Cybersecurity, Software Engineering, Data Science</div>
+        </div>
+        <div class="card">
+          <div class="card-title">School of Management & Communication (SMC)</div>
+          <div class="card-desc">Business, Marketing, Mass Communication</div>
+        </div>
+        <div class="card">
+          <div class="card-title">School of Sports, Health & Leisure (SHL)</div>
+          <div class="card-desc">Sports Science, Health Promotion, Outdoor Education</div>
+        </div>
+        <div class="card">
+          <div class="card-title">School of Technology for the Arts (STA)</div>
+          <div class="card-desc">Media, Design, Sonic Arts, Interactive Media</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: RP School Links -->
+    <section>
+      <div class="section-title">Republic Polytechnic School Links</div>
+      <div class="card-grid links-grid">
+        <div class="card">
+          <div class="card-title">RP Library</div>
+          <div class="card-desc">Access books, journals, and digital resources.</div>
+          <a class="card-btn" href="https://libopac.rp.edu.sg/client/en_GB/home/?rm=HOME0%7C%7C%7C1%7C%7C%7C0%7C%7C%7Ctrue" target="_blank" rel="noopener">Visit</a>
+        </div>
+        <div class="card">
+          <div class="card-title">PoliteMall</div>
+          <div class="card-desc">Your e-learning platform for all modules.</div>
+          <a class="card-btn" href="https://rplms.polite.edu.sg/d2l/home" target="_blank" rel="noopener">Visit</a>
+        </div>
+        <div class="card">
+          <div class="card-title">SA3.0</div>
+          <div class="card-desc">Student attendance, results, and more.</div>
+          <a class="card-btn" href="https://mysa.rp.edu.sg/" target="_blank" rel="noopener">Visit</a>
+        </div>
+        <div class="card">
+          <div class="card-title">Student Portal</div>
+          <div class="card-desc">All-in-one portal for student life and services.</div>
+          <a class="card-btn" href="https://myrp.sharepoint.com/sites/StudentLifePortal/SitePages/Home.aspx?" target="_blank" rel="noopener">Visit</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Study Tools -->
+    <section>
+      <div class="section-title">Study Tools</div>
+      <div class="card-grid tools-grid">
+        <div class="card">
+          <div class="card-title">Pomofocus</div>
+          <div class="card-desc">A Pomodoro timer to boost focus and productivity.</div>
+          <a class="card-btn" href="https://pomofocus.io/" target="_blank" rel="noopener">Visit</a>
+        </div>
+        <div class="card">
+          <div class="card-title">Google Calendar</div>
+          <div class="card-desc">Organise your schedule and set reminders easily.</div>
+          <a class="card-btn" href="https://calendar.google.com/" target="_blank" rel="noopener">Visit</a>
+        </div>
+        <div class="card">
+          <div class="card-title">Notion</div>
+          <div class="card-desc">All-in-one workspace for notes, tasks, and projects.</div>
+          <a class="card-btn" href="https://www.notion.so/" target="_blank" rel="noopener">Visit</a>
+        </div>
+        <div class="card">
+          <div class="card-title">Quizlet</div>
+          <div class="card-desc">Create flashcards and study sets for any subject.</div>
+          <a class="card-btn" href="https://quizlet.com/" target="_blank" rel="noopener">Visit</a>
+        </div>
+        <div class="card">
+          <div class="card-title">Toggl Track</div>
+          <div class="card-desc">Track your study time and boost productivity.</div>
+          <a class="card-btn" href="https://toggl.com/track/" target="_blank" rel="noopener">Visit</a>
+        </div>
+        <div class="card">
+          <div class="card-title">Sleepytime</div>
+          <div class="card-desc">Calculate your ideal bedtime for better rest.</div>
+          <a class="card-btn" href="https://sleepyti.me/" target="_blank" rel="noopener">Visit</a>
+        </div>
+        <div class="card">
+          <div class="card-title">Noisli</div>
+          <div class="card-desc">Background sounds to help you focus and relax.</div>
+          <a class="card-btn" href="https://www.noisli.com/" target="_blank" rel="noopener">Visit</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Based on Your Searches (Placeholder) -->
+    <section>
+      <div class="section-title">Based on Your Searches</div>
+      <div class="placeholder">Personalised recommendations will appear here soon!</div>
+    </section>
+  </main>
+</body>
+</html>
