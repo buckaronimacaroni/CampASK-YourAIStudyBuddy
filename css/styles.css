@@ -1,0 +1,137 @@
+/* Colour Palette: 
+   - Primary: #2D6A4F (Deep Green)
+   - Secondary: #40916C (Emerald)
+   - Accent: #FFD166 (Warm Yellow)
+   - Background: #F8F9FA (Light Grey)
+   - Text: #22223B (Dark Blue)
+*/
+
+:root {
+    --primary: #2D6A4F;
+    --secondary: #40916C;
+    --accent: #FFD166;
+    --background: #F8F9FA;
+    --text: #22223B;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+header {
+    background: var(--primary);
+    color: #fff;
+    padding: 2rem 1rem 1rem 1rem;
+    text-align: center;
+}
+
+.subtitle {
+    color: var(--accent);
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+}
+
+main {
+    max-width: 600px;
+    margin: 2rem auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+    padding: 2rem;
+}
+
+.chat-section {
+    margin-bottom: 2rem;
+}
+
+#chat-container {
+    min-height: 180px;
+    background: var(--background);
+    border: 1px solid var(--secondary);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    overflow-y: auto;
+    font-size: 1rem;
+}
+
+#chat-form {
+    display: flex;
+    gap: 0.5rem;
+}
+
+#user-input {
+    flex: 1;
+    padding: 0.75rem;
+    border: 1px solid var(--secondary);
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+button[type="submit"] {
+    background: var(--secondary);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button[type="submit"]:hover,
+button[type="submit"]:focus {
+    background: var(--primary);
+}
+
+.resources-section {
+    margin-top: 2rem;
+}
+
+.resources-section h2 {
+    color: var(--primary);
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+#resources-list {
+    list-style: none;
+    padding: 0;
+}
+
+#resources-list li {
+    background: var(--accent);
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-size: 0.98rem;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    color: var(--primary);
+    background: transparent;
+    font-size: 0.95rem;
+}
+
+.visually-hidden {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+@media (max-width: 700px) {
+    main {
+        padding: 1rem;
+    }
+}

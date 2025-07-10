@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your AI Study Buddy</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Your AI Study Buddy</h1>
+        <p class="subtitle">Instant academic support for RP students</p>
+    </header>
+    <main>
+        <section class="chat-section" aria-label="AI Chat Interface">
+            <div id="chat-container" tabindex="0" aria-live="polite"></div>
+            <form id="chat-form" autocomplete="off">
+                <label for="user-input" class="visually-hidden">Type your question</label>
+                <input type="text" id="user-input" name="user-input" placeholder="Ask a question..." required aria-required="true">
+                <button type="submit" aria-label="Send">Send</button>
+            </form>
+        </section>
+        <section class="resources-section" aria-label="Recommended Resources">
+            <h2>Recommended Resources</h2>
+            <ul id="resources-list"></ul>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 CampASK-YourAIStudyBuddy</p>
+    </footer>
+    <script src="js/app.js"></script>
+</body>
+</html>
