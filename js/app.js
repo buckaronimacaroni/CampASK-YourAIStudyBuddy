@@ -1,541 +1,971 @@
 // =====================
-// RP RAG Knowledge Base
-// =====================
-const rpRAG = {
-"School of Applied Science (SAS)": {
-    "Applied Chemistry": [
-        "Analytical Instrumentation",
-        "Biology",
-        "Engineering Mathematics",
-        "General and Physical Chemistry",
-        "Laboratory Practices and Safety",
-        "Materials Science",
-        "Mathematics",
-        "Organic and Inorganic Chemistry",
-        "Physics",
-        "Polymer Chemistry"
-    ],
-    "Biomedical Science": [
-        "Anatomy and Physiology",
-        "Biochemistry",
-        "Biology",
-        "Epidemiology and Biostatistics",
-        "General and Physical Chemistry",
-        "Genetics",
-        "Immunology",
-        "Laboratory Practices and Safety",
-        "Mathematics",
-        "Microbiology",
-        "Molecular and Cell Biology",
-        "Organic and Inorganic Chemistry"
-    ],
-    "Environmental Science & Aquaculture": [
-        "Biology",
-        "Earth and Climate Science",
-        "Environmental Data Analysis",
-        "Environmental Management and Assessment",
-        "General and Physical Chemistry",
-        "Laboratory Practices and Safety",
-        "Marine Biology",
-        "Marine Ecology and Conservation",
-        "Mathematics",
-        "Microbiology",
-        "Sustainable Reporting"
-    ]
-},
-"School of Engineering (SEG)": {
-    "Aerospace Engineering": [
-        "Aerodynamics and Propulsion",
-        "Digital Techniques and Electronic Instrument Systems",
-        "Electrical and Electronic Fundamentals",
-        "Engineering Design",
-        "Engineering Materials",
-        "Engineering Mathematics",
-        "Fundamentals of Industrial Internet of Things",
-        "Mathematics",
-        "Physics",
-        "Principles of Mechanics",
-        "Programming and Data Analysis",
-        "Thermofluids",
-        "Aircraft Inspection",
-        "Airframe Structures and Engine Systems",
-        "Aviation Legislation and Human Factors",
-        "Aviation Maintenance Practices"
-    ],
-    "Aviation Management": [
-        "Aerodynamics and Propulsion",
-        "Airline Operations",
-        "Distribution and Transportation",
-        "Engineering Cost Decisions",
-        "Engineering Design",
-        "Engineering Mathematics",
-        "Fundamentals of Industrial Internet of Things",
-        "General Aircraft Systems",
-        "Mathematics",
-        "Operations Planning",
-        "Physics",
-        "Programming and Data Analysis",
-        "Statistical Methods for Engineering",
-        "Duty Terminal Manager",
-        "Ground Services Officer",
-        "Passenger Services Officer",
-        "Pilot"
-    ],
-    "Electrical & Electronic Engineering": [
-        "Artificial Intelligence in Engineering",
-        "Circuit Analysis and Control",
-        "Computer Programming",
-        "Digital Electronics",
-        "Electrical and Electronic Fundamentals",
-        "Electronic Design and Development",
-        "Electronic Devices and Circuits",
-        "Engineering Design",
-        "Engineering Mathematics",
-        "Fundamentals of Industrial Internet of Things",
-        "Mathematics",
-        "Microcontroller Systems",
-        "Physics",
-        "Programming and Data Analysis",
-        "Aerodynamics and Propulsion",
-        "Aircraft Electrical Systems",
-        "Embedded Systems",
-        "Mobile Communications",
-        "Electronic and Semiconductor Materials",
-        "Measurement Techniques and Failure Analysis",
-        "Thin Film Technology",
-        "Wafer Fabrication and Packaging"
-    ],
-    "Engineering Systems & Management": [
-        "Engineering Cost Decisions",
-        "Engineering Design",
-        "Engineering Mathematics",
-        "Distribution and Transportation",
-        "Facilities Planning and Design",
-        "Fundamentals of Industrial Internet of Things",
-        "Inventory Management",
-        "Mathematics",
-        "Operations Planning"
-    ]
-},
-"School of Hospitality (SOH)": {
-    "Customer Experience Management with Business": [
-        "Digital Marketing and eCommerce",
-        "Financial Accounting",
-        "Hospitality Business Management",
-        "Hospitality Revenue Management",
-        "Marketing",
-        "Microeconomics",
-        "Service Quality and Professional Etiquette",
-        "Sustainable Tourism Development",
-        "Tourism and Hospitality in the Digital World",
-        "Consumer Behaviour",
-        "Contact Centre Technology and Operations",
-        "Customer Analytics",
-        "Customer Experience in Banking and Finance",
-        "Customer Relationship Management",
-        "Hospitality Sales",
-        "Innovation and Design for Service Operations",
-        "Managing Customer Experience",
-        "Retail Management and Innovation"
-    ],
-    "Hotel & Hospitality Management": [
-        "Financial Accounting",
-        "Hospitality Business Management",
-        "Hospitality Revenue Management",
-        "Marketing",
-        "Microeconomics",
-        "Service Quality and Professional Etiquette",
-        "Sustainable Tourism Development",
-        "Tourism and Hospitality in the Digital World"
-    ],
-    "Integrated Events Management": [
-        "Financial Accounting",
-        "Hospitality Business Management",
-        "Hospitality Revenue Management",
-        "Marketing",
-        "Microeconomics",
-        "Service Quality and Professional Etiquette",
-        "Tourism and Hospitality in the Digital World",
-        "Customer Analytics",
-        "Design Thinking for Business Innovation"
-    ],
-    "Restaurant & Culinary Operations": [
-        "Digital Marketing and eCommerce",
-        "Financial Accounting",
-        "Hospitality Business Management",
-        "Hospitality Revenue Management",
-        "Marketing",
-        "Microeconomics",
-        "Sustainable Tourism Development",
-        "Tourism and Hospitality in the Digital World",
-        "Catering Management",
-        "Culinary Science and Arts",
-        "Customer Analytics",
-        "Food & Beverage Business Management",
-        "Restaurant and Culinary Operations",
-        "Restaurant and Culinary Practicum",
-        "Restaurant Entrepreneurship"
-    ],
-    "Tourism Management with Technology": [
-        "Entrepreneurship",
-        "Financial Accounting",
-        "Hospitality Business Management",
-        "Hospitality Revenue Management",
-        "Marketing",
-        "Microeconomics",
-        "Service Quality and Professional Etiquette",
-        "Tourism and Hospitality in the Digital World",
-        "Customer Analytics",
-        "Design Thinking for Business Innovation"
-    ]
-},
-"School of Infocomm (SOI)": {
-    "Common ICT Programme": [
-        "Computer System Technologies",
-        "Database Systems",
-        "IT in Business Processes",
-        "IT Security and Management",
-        "Mathematics",
-        "Programming Fundamentals I",
-        "Programming Fundamentals II"
-    ],
-    "ICT Specialisations": [
-        "Software Application Development",
-        "Software Development Process",
-        "AI and Machine Learning",
-        "Business Analysis Practice",
-        "Business Analytics",
-        "Business Intelligence",
-        "Business Systems",
-        "Data Management and Automation",
-        "Marketing",
-        "Rapid App Development",
-        "UI/UX Design for Apps"
-    ]
-},
-"School of Business (SBZ)": {
-    "Business": [
-        "Business and Sustainability",
-        "Business Law",
-        "Data Analytics and Visualisation",
-        "Design Thinking for Business Innovation",
-        "Digital Marketing and eCommerce",
-        "Digital Media Communication",
-        "Entrepreneurship",
-        "Financial Accounting",
-        "Macroeconomics",
-        "Management Accounting",
-        "Marketing",
-        "Microeconomics",
-        "Organisational Behaviour",
-        "Understanding the Society",
-        "Business and Impact Assessment",
-        "Digital Business Strategies",
-        "Ecommerce Operations",
-        "Sustainable Finance"
-    ],
-    "Consumer Behaviour & Research": [
-        "Advanced Integrated Marketing Communications",
-        "Business Statistics",
-        "Consumer Behaviour",
-        "Design Thinking for Business Innovation",
-        "Entrepreneurship",
-        "Introduction to Psychology",
-        "Macroeconomics",
-        "Marketing",
-        "Microeconomics",
-        "Qualitative Research Methods",
-        "Quantitative Research Methods",
-        "Social Psychology",
-        "Business Law",
-        "Cognition and Applied Psychology",
-        "Data Analytics and Visualisation",
-        "Digital Marketing Analytics",
-        "Digital Marketing and eCommerce",
-        "International and Cross-Cultural Marketing"
-    ],
-    "Human Resource Management with Psychology": [
-        "Cross Cultural Communication",
-        "Financial Accounting",
-        "Introduction to Counselling and Communication",
-        "Macroeconomics",
-        "Management Accounting",
-        "Marketing",
-        "Microeconomics",
-        "Organisational Behaviour",
-        "Social Psychology",
-        "Asian Industrial Relations Environment",
-        "Diversity and International Staff Management",
-        "Employment Laws and Labour Relations",
-        "HR Analytics and Technology",
-        "Industrial‑Organisational Psychology",
-        "International Business",
-        "Learning and People Development",
-        "Organisational Development and Change Management",
-        "Performance, Remuneration and Benefits",
-        "Talent Acquisition and Management"
-    ]
-},
-    "School of Sports and Health (SSH)": {
-    "Health Management & Promotion": [
-        "Biopsychosocial Aspects of Ageing",
-        "Health and Wellness",
-        "Sociology of Sports, Health and Leisure",
-        "Anatomy and Physiology",
-        "Business Statistics",
-        "Case Management",
-        "Community and Social Care",
-        "Data Analytics and Visualisation",
-        "Financial Accounting",
-        "Financing for Healthcare",
-        "Health Ethics and Law",
-        "Health Psychology",
-        "Healthcare Operations Management"
-    ],
-    "Sport Coaching": [
-        "Biopsychosocial Aspects of Ageing",
-        "Inclusive Physical Activity",
-        "Mathematics",
-        "Sociology of Sports, Health and Leisure",
-        "Exercise Programming and Assessment",
-        "Foundations of Kinesiology",
-        "Practical Studies (e.g. Badminton/Basketball/Football/Swimming/Table Tennis)",
-        "Corporate Wellness",
-        "Health and Wellness",
-        "Sports Policies"
-    ],
-    "Sport & Exercise Science": [ /* similar discipline ; omitted for brevity */ ]
-},
-"School of Technology for Arts, Media & Design (STA)": {
-    "Common Arts, Design & Media Programme": [
-        "Art of Story",
-        "Arts History",
-        "Creative Concepts",
-        "Design for Interactive Media",
-        "Interdisciplinary Drawing",
-        "Introduction to User Experience",
-        "Design Research for UX",
-        "Game Design and Gamification",
-        "Sound Design",
-        "Technical Theatre",
-        "Visual Storytelling for Content Creators"
-    ],
-    "Design for Games & Gamification": [
-      /* general + game-specific modules, similar to above */
-    ],
-    "Media Production & Design": [ /* include advanced modules per PDF */ ]
-}
-};
-
-
-// =====================
 // Vibe Chatbot UI State
 // =====================
 let vibeChatOpen = false;
 let vibeChatHistory = [];
-let vibeRecentAcademicQueries = [];
+let vibeIsTyping = false;
+let vibeEmojiPickerOpen = false;
+let vibeWelcomeShown = false;
+
+// Video system state
+let vibeRecentQueries = []; // Store last 5 user queries with videos
+const MAX_RECENT_QUERIES = 5; // Maximum recent queries to store
+
+function forceCleanVideoSection() {
+  const videoSection = document.getElementById('related-videos-section');
+  if (videoSection) {
+    // Completely clear and reset the section
+    videoSection.innerHTML = `
+      <div class="no-videos-message">
+        <h3>🎥 Related YouTube Videos</h3>
+        <p>No recent searches yet. Ask the chatbot about any topic to see videos here!</p>
+      </div>
+    `;
+    console.log('✅ Video section cleaned and reset');
+  }
+  
+  // Also clear the vibeRecentQueries array
+  vibeRecentQueries = [];
+  
+  // Remove from localStorage to prevent reload
+  try {
+    localStorage.removeItem('vibeRecentQueries');
+    console.log('✅ Video history cleared from localStorage');
+  } catch (e) {
+    console.warn('Failed to clear video history from localStorage:', e);
+  }
+}
+
+function escapeHTML(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function formatBotMessage(text) {
+  // Convert **text** to proper HTML bold tags while keeping other formatting
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>')
+    // Preserve emoji and other special characters
+    .replace(/📚/g, '📚')
+    .replace(/🔍/g, '🔍')
+    .replace(/💡/g, '💡')
+    .replace(/⚠️/g, '⚠️')
+    .replace(/✨/g, '✨')
+    .replace(/🤖/g, '🤖');
+}
+
+// Common emojis for quick access
+const quickEmojis = [
+  '😊', '👍', '🤔', '📚', '✨', '💡', '❓',
+  '🎓', '✏️', '📝', '💪', '👏', '🌟', '💻'
+];
+
+// Handle emoji selection
+function handleEmojiClick(emoji) {
+  const input = document.getElementById('vibe-user-input');
+  if (input) {
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+    const text = input.value;
+    input.value = text.substring(0, start) + emoji + text.substring(end);
+    input.focus();
+    input.selectionStart = input.selectionEnd = start + emoji.length;
+    vibeEmojiPickerOpen = false;
+    vibeRender();
+  }
+}
+
+// Format timestamp
+function formatTime(date) {
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const messageDate = new Date(date);
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  if (messageDate >= today) {
+    return messageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  } else if (messageDate >= yesterday) {
+    return 'Yesterday ' + messageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  } else {
+    return messageDate.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ' ' + 
+           messageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+}
+
+// Reset and load chat history
+function loadChatHistory() {
+  try {
+    // Always start fresh on page load - clear everything
+    localStorage.removeItem('vibeChatHistory');
+    localStorage.removeItem('vibeRecentQueries'); // ADD this line to clear video history
+    
+    vibeChatHistory = [];
+    vibeRecentQueries = []; // Clear video queries array
+    vibeWelcomeShown = false;
+    
+    console.log('✨ Chat state and video history reset successfully');
+  } catch (e) {
+    console.warn('Failed to reset chat state:', e);
+  }
+}
+
+// Save chat history to localStorage
+function saveChatHistory() {
+  try {
+    localStorage.setItem('vibeChatHistory', JSON.stringify(vibeChatHistory));
+  } catch (e) {
+    console.warn('Failed to save chat history:', e);
+  }
+}
+
+// =====================
+// Video Grid Functions
+// =====================
+function getTimeAgo(timestamp) {
+  const now = new Date();
+  const time = new Date(timestamp);
+  const diffInSeconds = Math.floor((now - time) / 1000);
+  
+  if (diffInSeconds < 60) return 'Just now';
+  if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+  if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+  return `${Math.floor(diffInSeconds / 86400)}d ago`;
+}
+
+function copyVideoLink(videoId) {
+  const videoUrl = `https://youtube.com/watch?v=${videoId}`;
+  
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(videoUrl).then(() => {
+      showCopyNotification('Video link copied!');
+    }).catch(err => {
+      console.error('Failed to copy:', err);
+      fallbackCopyTextToClipboard(videoUrl);
+    });
+  } else {
+    fallbackCopyTextToClipboard(videoUrl);
+  }
+}
+
+function fallbackCopyTextToClipboard(text) {
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  textArea.style.cssText = "position:fixed;top:0;left:0;opacity:0;";
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  
+  try {
+    document.execCommand('copy');
+    showCopyNotification('Video link copied!');
+  } catch (err) {
+    console.error('Fallback: Could not copy text: ', err);
+    showCopyNotification('Failed to copy link');
+  }
+  
+  document.body.removeChild(textArea);
+}
+
+function showCopyNotification(message) {
+  const notification = document.createElement('div');
+  notification.className = 'vibe-copy-notification';
+  notification.textContent = message;
+  document.body.appendChild(notification);
+  
+  setTimeout(() => {
+    notification.remove();
+  }, 3000);
+}
+
+function generateVideoGrid() {
+  let gridHTML = '';
+  
+  vibeRecentQueries.forEach((queryData, index) => {
+    const videos = queryData.videos.slice(0, 3);
+    const timeAgo = getTimeAgo(queryData.timestamp);
+    
+    gridHTML += `
+      <div class="vibe-query-section">
+        <div class="vibe-query-header">
+          <h4 class="vibe-query-title">"${queryData.query}"</h4>
+          <span class="vibe-query-time">${timeAgo}</span>
+        </div>
+        <div class="vibe-videos-grid">
+          ${videos.map(video => `
+            <div class="vibe-video-card">
+              <div class="vibe-video-thumbnail">
+                <img src="${video.snippet.thumbnails.medium.url}" alt="${video.snippet.title}">
+              </div>
+              <h5 class="vibe-video-title">${video.snippet.title}</h5>
+              <p class="vibe-video-description">${video.snippet.description || 'No description available'}</p>
+              <div class="vibe-video-actions">
+                <a href="https://youtube.com/watch?v=${video.id.videoId}" target="_blank" class="vibe-watch-btn">▶️ Watch</a>
+                <button onclick="copyVideoLink('${video.id.videoId}')" class="vibe-copy-btn">📋 Copy</button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  });
+  
+  return gridHTML;
+}
 
 // =====================
 // Vibe Render Engine
 // =====================
 function vibeRender() {
-  const root = document.getElementById('vibe-chatbot-root');
-  if (!root) return;
+  try {
+    let root = document.getElementById('vibe-chatbot-root');
+    if (!root) {
+      root = document.createElement('div');
+      root.id = 'vibe-chatbot-root';
+      document.body.appendChild(root);
+    }
+
+    // Save the action buttons if they exist
+    const existingActions = document.querySelector('.chatbot-actions');
+  
   root.innerHTML = `
-    <div id="vibe-bubble" style="position:fixed;bottom:32px;right:32px;width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#2563EB,#60A5FA);display:${vibeChatOpen?'none':'flex'};align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(37,99,235,0.18);cursor:pointer;z-index:9999;transition:box-shadow 0.2s;">
+    <div id="vibe-bubble" style="position:fixed;bottom:32px;right:32px;width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#2563EB,#60A5FA);display:${vibeChatOpen?'none':'flex'};align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(37,99,235,0.18);cursor:pointer;z-index:9999;transition:all 0.3s ease-in-out;transform:scale(1);">
       <svg width="32" height="32" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#fff" opacity="0.08"/><path d="M7 10h10M7 14h6" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
     </div>
-    <div id="vibe-chatbox" style="position:fixed;bottom:32px;right:32px;width:370px;max-width:98vw;height:540px;max-height:98vh;background:#fff;border-radius:18px;box-shadow:0 8px 32px rgba(37,99,235,0.18);display:${vibeChatOpen?'flex':'none'};flex-direction:column;z-index:9999;overflow:hidden;">
+    <div id="vibe-chatbox" style="position:fixed;bottom:${vibeChatOpen ? '32px' : '-600px'};right:32px;width:370px;max-width:98vw;height:540px;max-height:98vh;background:#fff;border-radius:18px;box-shadow:0 8px 32px rgba(37,99,235,0.18);display:flex;flex-direction:column;z-index:9999;overflow:hidden;transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);opacity:${vibeChatOpen ? '1' : '0'};">
       <div style="background:linear-gradient(90deg,#2563EB,#60A5FA);color:#fff;padding:18px 20px 14px 20px;font-size:1.2rem;font-weight:bold;letter-spacing:0.5px;display:flex;align-items:center;justify-content:space-between;">
-        <span>Your AI Study Buddy</span>
-        <span id='vibe-minimise' style='cursor:pointer;font-size:1.3rem;font-weight:normal;' title='Minimise'>&#8211;</span>
+        <span>Your Study Buddy</span>
+        <div style="display:flex;gap:12px;align-items:center;">
+          <button onclick="clearChat()" style="background:none;border:none;color:#fff;cursor:pointer;font-size:1.1rem;padding:4px;opacity:0.8;transition:opacity 0.2s;border-radius:4px;" onmouseover="this.style.opacity=1;this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.opacity=0.8;this.style.background='none'" title="Clear Chat">🧹</button>
+          <span id='vibe-minimise' onclick='vibeChatOpen=false;vibeRender();' style='cursor:pointer;font-size:1.3rem;font-weight:normal;transition:opacity 0.2s;opacity:0.8;' title='Minimise' onmouseover='this.style.opacity=1' onmouseout='this.style.opacity=0.8'>−</span>
+        </div>
       </div>
-      <div id="vibe-messages" style="flex:1;overflow-y:auto;padding:18px 12px 12px 12px;background:#f5f6fa;height:100%;max-height:100%;"></div>
-      <form id="vibe-form" style="display:flex;align-items:center;padding:10px 10px 10px 10px;background:#f3f4f6;border-top:1px solid #e5e7eb;">
-        <input id="vibe-user-input" type="text" autocomplete="off" placeholder="Ask me anything..." style="flex:1;padding:10px 14px;border-radius:12px;border:none;background:#fff;font-size:1rem;outline:none;box-shadow:0 1px 4px rgba(37,99,235,0.04);margin-right:8px;" />
-        <button id="vibe-send-btn" type="submit" style="background:none;border:none;outline:none;cursor:pointer;padding:0 8px;display:flex;align-items:center;">
-          <svg width="28" height="28" viewBox="0 0 24 24"><path d="M3 20l18-8-18-8v6l12 2-12 2z" fill="${document.getElementById('vibe-user-input')&&document.getElementById('vibe-user-input').value? '#2563EB':'#9CA3AF'}"/></svg>
+      <div id="vibe-messages" style="flex:1;overflow-y:auto;padding:18px 12px 12px 12px;background:#f5f6fa;height:100%;max-height:100%;">
+        ${vibeChatHistory.map(msg => {
+          const time = msg.timestamp ? formatTime(msg.timestamp) : '';
+          if (msg.sender === 'user') {
+            return `<div style="display:flex;justify-content:flex-end;margin-bottom:10px;opacity:1;transform:translateY(0);transition:all 0.3s ease-out;">
+              <div style="max-width:70%;background:#E5E7EB;color:#22223B;padding:12px 18px;border-radius:18px 18px 4px 18px;font-size:1rem;word-break:break-word;transition:transform 0.2s ease-out;position:relative;" onmouseover="this.style.transform='scale(1.01)'" onmouseout="this.style.transform='scale(1)'">
+                ${escapeHTML(msg.text)}
+                <div style="font-size:0.75rem;color:#6B7280;margin-top:4px;text-align:right;">${time}</div>
+              </div>
+            </div>`;
+          } else {
+            let messageContent = msg.text;
+            
+            // Add action buttons to each bot reply (except welcome message)
+            if (!msg.text.includes('Hi there! I am CampASK') && !msg.text.includes('Related YouTube Videos')) {
+              // Extract the query from the message for button links
+              const queryMatch = msg.text.match(/I found library resources for "([^"]+)"/);
+              const query = queryMatch ? queryMatch[1] : 'study topic';
+              
+              messageContent += `
+                <div class="bot-action-buttons">
+                  <a href="https://libopac.rp.edu.sg/client/en_GB/home/search/results?qu=${encodeURIComponent(query).replace(/%20/g, '+')}&rm=HOME0%7C%7C%7C1%7C%7C%7C0%7C%7C%7Ctrue&te=ILS" target="_blank" class="bot-action-btn library-btn">
+                    📚 Open RP Library
+                  </a>
+                  <button onclick="openFirstYouTubeVideo('${query}')" class="bot-action-btn video-btn">
+                    🎥 Watch YouTube Video
+                  </button>
+                  <button onclick="scrollToVideosSection()" class="bot-action-btn more-btn">
+                    📺 More YouTube Videos
+                  </button>
+                </div>
+              `;
+            }
+            
+            return `<div style="display:flex;align-items:flex-end;margin-bottom:14px;opacity:1;transform:translateY(0);transition:all 0.3s ease-out;">
+              <div style="width:28px;height:28px;border-radius:50%;background:#2563EB;display:flex;align-items:center;justify-content:center;margin-right:8px;position:relative;bottom:-8px;transition:transform 0.2s ease-out;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><svg width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#fff" opacity="0.12"/><path d="M12 7a2 2 0 0 1 2 2v1h-4V9a2 2 0 0 1 2-2zm-4 7v-1a4 4 0 0 1 8 0v1a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2z" fill="#fff"/></svg></div>
+              <div class="vibe-bot-msg" style="max-width:70%;background:#1F2937;color:#fff;padding:12px 18px;border-radius:18px 18px 18px 4px;font-size:1rem;word-break:break-word;transition:transform 0.2s ease-out;position:relative;" onmouseover="this.style.transform='scale(1.01)'" onmouseout="this.style.transform='scale(1)'">
+                ${formatBotMessage(messageContent)}
+                <div style="font-size:0.75rem;color:#9CA3AF;margin-top:4px;">${time}</div>
+              </div>
+            </div>`;
+          }
+        }).join('')}
+        ${vibeIsTyping ? `
+          <div style="display:flex;align-items:flex-end;margin-bottom:14px;opacity:1;transform:translateY(0);transition:all 0.3s ease-out;">
+            <div style="width:28px;height:28px;border-radius:50%;background:#2563EB;display:flex;align-items:center;justify-content:center;margin-right:8px;position:relative;bottom:-8px;">
+              <svg width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#fff" opacity="0.12"/><path d="M12 7a2 2 0 0 1 2 2v1h-4V9a2 2 0 0 1 2-2zm-4 7v-1a4 4 0 0 1 8 0v1a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2z" fill="#fff"/></svg>
+            </div>
+            <div style="max-width:70%;background:#1F2937;color:#fff;padding:12px 18px;border-radius:18px 18px 18px 4px;font-size:1rem;">
+              <div style="display:flex;align-items:center;gap:4px;">
+                <span style="width:6px;height:6px;border-radius:50%;background:#fff;opacity:0.6;animation:typing 1s infinite">•</span>
+                <span style="width:6px;height:6px;border-radius:50%;background:#fff;opacity:0.6;animation:typing 1s infinite 0.2s">•</span>
+                <span style="width:6px;height:6px;border-radius:50%;background:#fff;opacity:0.6;animation:typing 1s infinite 0.4s">•</span>
+              </div>
+            </div>
+          </div>
+        ` : ''}
+      </div>
+      <style>
+        @keyframes typing {
+          0%, 100% { opacity: 0.6; }
+          50% { opacity: 1; }
+        }
+        @keyframes scaleIn {
+          from { transform: scale(0.95); opacity: 0; }
+          to { transform: scale(1); opacity: 1; }
+        }
+      </style>
+      <form id="vibe-form" style="display:flex;align-items:center;padding:10px 10px 10px 10px;background:#f3f4f6;border-top:1px solid #e5e7eb;position:relative;">
+        <button type="button" id="vibe-emoji-btn" style="background:none;border:none;outline:none;cursor:pointer;padding:8px;margin-right:4px;display:flex;align-items:center;transition:transform 0.2s ease-out;opacity:0.7;" onmouseover="this.style.opacity=1;this.style.transform='scale(1.1)'" onmouseout="this.style.opacity=0.7;this.style.transform='scale(1)'" onclick="vibeEmojiPickerOpen=!vibeEmojiPickerOpen;vibeRender()">
+          😊
+        </button>
+        ${vibeEmojiPickerOpen ? `
+          <div style="position:absolute;bottom:100%;left:10px;background:white;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);padding:8px;display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:8px;z-index:1000;transform-origin:bottom left;animation:scaleIn 0.2s ease-out;">
+            ${quickEmojis.map(emoji => `
+              <button type="button" onclick="handleEmojiClick('${emoji}')" style="background:none;border:none;outline:none;cursor:pointer;padding:6px;border-radius:6px;transition:all 0.2s;font-size:1.2rem;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">${emoji}</button>
+            `).join('')}
+          </div>
+        ` : ''}
+        <input id="vibe-user-input" type="text" autocomplete="off" placeholder="Ask me anything..." style="flex:1;padding:10px 14px;border-radius:12px;border:none;background:#fff;font-size:1rem;outline:none;box-shadow:0 1px 4px rgba(37,99,235,0.04);margin-right:8px;transition:box-shadow 0.2s ease-out;" onmouseover="this.style.boxShadow='0 2px 8px rgba(37,99,235,0.08)'" onmouseout="this.style.boxShadow='0 1px 4px rgba(37,99,235,0.04)'"/>
+        <button id="vibe-send-btn" type="submit" style="background:none;border:none;outline:none;cursor:pointer;padding:0 8px;display:flex;align-items:center;transition:transform 0.2s ease-out;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+          <svg width="28" height="28" viewBox="0 0 24 24"><path d="M3 20l18-8-18-8v6l12 2-12 2z" fill="${document.getElementById('vibe-user-input')&&document.getElementById('vibe-user-input').value? '#2563EB':'#9CA3AF'}" style="transition:fill 0.2s ease-out;"/></svg>
         </button>
       </form>
+      <div id="vibe-emoji-picker" style="position:absolute;bottom:100%;right:10px;width=300px;background:#fff;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.2);display:${vibeEmojiPickerOpen ? 'block' : 'none'};z-index:10000;padding:10px;transition:opacity 0.3s ease-out, transform 0.3s ease-out;transform:translateY(${vibeEmojiPickerOpen ? '0' : '10px'});opacity:${vibeEmojiPickerOpen ? '1' : '0'};">
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          ${quickEmojis.map(emoji => `<div style="font-size:1.5rem;cursor:pointer;" title="Insert ${emoji}" onclick="handleEmojiClick('${emoji}')">${emoji}</div>`).join('')}
+        </div>
+      </div>
     </div>
   `;
-  // Render messages
-  const msgDiv = root.querySelector('#vibe-messages');
-  if (msgDiv) {
-    msgDiv.innerHTML = vibeChatHistory.map(msg => {
-      if (msg.sender === 'user') {
-        return `<div style="display:flex;justify-content:flex-end;margin-bottom:10px;">
-          <div style="max-width:70%;background:#E5E7EB;color:#22223B;padding:12px 18px;border-radius:18px 18px 4px 18px;font-size:1rem;word-break:break-word;">${escapeHTML(msg.text)}</div>
-        </div>`;
-      } else {
-        return `<div style="display:flex;align-items:flex-end;margin-bottom:14px;">
-          <div style="width:28px;height:28px;border-radius:50%;background:#2563EB;display:flex;align-items:center;justify-content:center;margin-right:8px;position:relative;bottom:-8px;"><svg width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#fff" opacity="0.12"/><path d="M12 7a2 2 0 0 1 2 2v1h-4V9a2 2 0 0 1 2-2zm-4 7v-1a4 4 0 0 1 8 0v1a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2z" fill="#fff"/></svg></div>
-          <div class="vibe-bot-msg" style="max-width:70%;background:#1F2937;color:#fff;padding:12px 18px;border-radius:18px 18px 18px 4px;font-size:1rem;word-break:break-word;">${msg.text}</div>
-        </div>`;
-      }
-    }).join('');
-    // Safely parse HTML replies
-    msgDiv.querySelectorAll('.vibe-bot-msg').forEach(div => { div.innerHTML = div.textContent; });
-    msgDiv.scrollTop = msgDiv.scrollHeight;
+
+  // Reinsert the action buttons if they existed
+  if (existingActions) {
+    const messagesContainer = document.getElementById('vibe-messages');
+    const firstMessage = messagesContainer.querySelector('.vibe-bot-msg');
+    if (firstMessage) {
+      firstMessage.parentNode.after(existingActions);
+    }
   }
-  // Bubble click
-  const bubble = document.getElementById('vibe-bubble');
-  if (bubble) bubble.onclick = () => { vibeChatOpen = true; vibeRender(); setTimeout(() => { document.getElementById('vibe-user-input')?.focus(); }, 100); };
-  // Minimise click
-  const minimise = document.getElementById('vibe-minimise');
-  if (minimise) minimise.onclick = () => { vibeChatOpen = false; vibeRender(); };
-  // Form submit
-  const form = document.getElementById('vibe-form');
-  if (form) {
-    form.onsubmit = handleSubmit;
-    const input = document.getElementById('vibe-user-input');
-    if (input) {
-      input.oninput = () => {
-        document.getElementById('vibe-send-btn').querySelector('path').setAttribute('fill', input.value ? '#2563EB' : '#9CA3AF');
-      };
+  
+  // Setup input handlers after render
+  setupInputHandlers();
+  
+  } catch (error) {
+    console.error('❌ Error in vibeRender:', error);
+    // Fallback minimal render
+    let root = document.getElementById('vibe-chatbot-root');
+    if (root) {
+      root.innerHTML = '<div style="color: red; padding: 20px;">Chatbot render error. Please refresh.</div>';
     }
   }
 }
 
-function escapeHTML(str) {
-  return str.replace(/[&<>]/g, tag => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[tag]));
+function openFirstYouTubeVideo(query) {
+  const matchingQuery = vibeRecentQueries.find(q => 
+    q.query.toLowerCase() === query.toLowerCase()
+  );
+  
+  if (matchingQuery && matchingQuery.videos.length > 0) {
+    const firstVideo = matchingQuery.videos[0];
+    window.open(`https://youtube.com/watch?v=${firstVideo.id.videoId}`, '_blank');
+  } else {
+    window.open(`https://youtube.com/results?search_query=${encodeURIComponent(query)}`, '_blank');
+  }
+}
+
+function scrollToVideosSection() {
+  const videoSection = document.getElementById('related-videos-section');
+  if (videoSection) {
+    videoSection.scrollIntoView({ 
+      behavior: 'smooth', 
+      block: 'start' 
+    });
+    videoSection.classList.add('highlight-section');
+    setTimeout(() => {
+      videoSection.classList.remove('highlight-section');
+    }, 2000);
+  } else {
+    alert('Please scroll down to see the "Related YouTube Videos" section on this page!');
+  }
+}
+
+function setupInputHandlers() {
+  setTimeout(() => {
+    const input = document.getElementById('vibe-user-input');
+    const sendBtn = document.getElementById('vibe-send-btn');
+    
+    if (input && !input.hasAttribute('data-vibe-handler')) {
+      console.log('🎯 Setting up input handlers for:', input.id);
+      
+      // Mark as handled to prevent duplicate listeners
+      input.setAttribute('data-vibe-handler', 'true');
+      
+      // Focus the input
+      input.focus();
+      
+      // Simple input handler for send button color
+      input.addEventListener('input', (e) => {
+        console.log('📝 Input value changed:', e.target.value);
+        updateSendButtonColor(e.target.value);
+      });
+      
+      console.log('✅ Input handlers set successfully');
+    }
+    
+    // Handle send button clicks
+    if (sendBtn && !sendBtn.hasAttribute('data-vibe-handler')) {
+      sendBtn.setAttribute('data-vibe-handler', 'true');
+      sendBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log('🖱️ Send button clicked');
+        handleSubmit();
+      });
+    }
+  }, 50);
+}
+
+function updateSendButtonColor(value) {
+  const sendBtn = document.getElementById('vibe-send-btn');
+  if (sendBtn) {
+    const svg = sendBtn.querySelector('path');
+    if (svg) {
+      svg.setAttribute('fill', value.trim() ? '#2563EB' : '#9CA3AF');
+    }
+  }
+}
+
+function debugChatInput() {
+  const input = document.getElementById('vibe-user-input');
+  const form = document.getElementById('vibe-chat-form');
+  const sendBtn = document.getElementById('vibe-send-btn');
+  
+  console.log('🔍 Debug Info:');
+  console.log('Input found:', !!input);
+  console.log('Form found:', !!form);
+  console.log('Send button found:', !!sendBtn);
+  console.log('Chat open:', vibeChatOpen);
+  console.log('Input focused:', document.activeElement === input);
+  
+  if (input) {
+    console.log('Input value:', input.value);
+    console.log('Input disabled:', input.disabled);
+    console.log('Input readonly:', input.readOnly);
+    input.focus();
+    console.log('Focused input');
+  }
+}
+
+// Debug and Testing Functions
+// =====================
+function testChatInput() {
+  console.log('🔍 Testing chat input functionality...');
+  
+  const input = document.getElementById('vibe-user-input');
+  const form = document.getElementById('vibe-chat-form');
+  const sendBtn = document.getElementById('vibe-send-btn');
+  
+  console.log('📋 Input field:', input);
+  console.log('📋 Form:', form);
+  console.log('📋 Send button:', sendBtn);
+  
+  if (input) {
+    console.log('✅ Input found');
+    console.log('  - Value:', input.value);
+    console.log('  - Disabled:', input.disabled);
+    console.log('  - ReadOnly:', input.readOnly);
+    console.log('  - TabIndex:', input.tabIndex);
+    console.log('  - Event listeners:', getEventListeners ? getEventListeners(input) : 'DevTools needed for event listeners');
+    
+    // Test focus
+    try {
+      input.focus();
+      console.log('✅ Focus test passed');
+    } catch (e) {
+      console.error('❌ Focus test failed:', e);
+    }
+    
+    // Test typing simulation
+    try {
+      input.value = 'test typing';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      console.log('✅ Typing simulation passed');
+    } catch (e) {
+      console.error('❌ Typing simulation failed:', e);
+    }
+    
+  } else {
+    console.error('❌ Input field not found');
+  }
+  
+  if (form) {
+    console.log('✅ Form found');
+    console.log('  - Action:', form.action);
+    console.log('  - Method:', form.method);
+  } else {
+    console.error('❌ Form not found');
+  }
+  
+  if (sendBtn) {
+    console.log('✅ Send button found');
+    console.log('  - Disabled:', sendBtn.disabled);
+    console.log('  - Type:', sendBtn.type);
+  } else {
+    console.error('❌ Send button not found');
+  }
+  
+  console.log('🔍 Input test complete');
+}
+
+// Make available globally for debugging
+window.testChatInput = testChatInput;
+
+// Scroll helper function for better UX
+function scrollToLatestMessage() {
+  const messages = document.getElementById('vibe-messages');
+  if (messages) {
+    messages.scrollTop = messages.scrollHeight;
+    messages.style.scrollBehavior = 'smooth';
+  }
 }
 
 // =====================
 // Chatbot Logic
 // =====================
-async function handleSubmit(e) {
-  e.preventDefault();
+async function handleSubmit() {
+  console.log('🚀 handleSubmit called');
+  
   const input = document.getElementById('vibe-user-input');
-  if (!input || !input.value.trim()) return;
-  const userMsg = input.value.trim();
-  vibeChatHistory.push({ sender: 'user', text: userMsg });
-  vibeRender();
-  input.value = '';
-  // RAG logic
-  const ragResult = checkRAG(userMsg);
-  if (ragResult) {
-    vibeChatHistory.push({ sender: 'bot', text: ragResult });
-    vibeRender();
-    setTimeout(() => { document.getElementById('vibe-user-input')?.focus(); }, 100);
+  if (!input) {
+    console.error('❌ Input field not found');
     return;
   }
-  // Track academic queries for quiz
-  vibeRecentAcademicQueries.push(userMsg);
-  // Gemini logic
-  const geminiReply = await fetchGemini(userMsg);
-  vibeChatHistory.push({ sender: 'bot', text: geminiReply });
+  
+  const userMsg = input.value?.trim();
+  if (!userMsg) {
+    console.log('⚠️ Empty message, not sending');
+    return;
+  }
+  
+  console.log('📤 User message:', userMsg);
+
+  // Clear input immediately
+  input.value = '';
+  
+  // Save user message
+  vibeChatHistory.push({ 
+    sender: 'user', 
+    text: userMsg, 
+    timestamp: new Date().toISOString() 
+  });
+  saveChatHistory();
   vibeRender();
-  setTimeout(() => { document.getElementById('vibe-user-input')?.focus(); }, 100);
-  // YouTube logic
-  fetchYouTube(userMsg);
-  // Quiz logic (after 3+ queries)
-  if (vibeRecentAcademicQueries.length >= 3) {
-    fetchQuiz(vibeRecentAcademicQueries.slice(-3));
-  }
-}
+  scrollToLatestMessage();
+  
+  // Show typing indicator
+  vibeIsTyping = true;
+  vibeRender();
 
-function checkRAG(query) {
-  // School/course/module logic
-  const lower = query.toLowerCase();
-  for (const school in rpRAG) {
-    if (lower.includes(school.toLowerCase()) || lower.includes(school.match(/\((.*?)\)/)?.[1]?.toLowerCase() || '')) {
-      // List courses
-      const courses = Object.keys(rpRAG[school]);
-      return `Courses offered by <b>${school}</b>:<ul>` + courses.map(c=>`<li>${c}</li>`).join('') + '</ul>';
-    }
-    for (const course in rpRAG[school]) {
-      if (lower.includes(course.toLowerCase())) {
-        // List modules/topics
-        const topics = rpRAG[school][course];
-        return `Topics in <b>${course}</b>:<ul>` + topics.map(t=>`<li>${t}</li>`).join('') + '</ul>';
-      }
-    }
-  }
-  return null;
-}
-
-async function fetchGemini(query) {
   try {
-    const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyDg2hEi3hNp06jgF1Uy4sCGsV4soF1Asnc', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: [{ parts: [{ text: query }] }] })
+    // Generate response
+    console.log('📚 Generating response...');
+    const resourceReply = await fetchLibraryAndVideo(userMsg);
+    console.log('📨 Response generated:', resourceReply);
+    
+    // Hide typing and show response
+    vibeIsTyping = false;
+    vibeChatHistory.push({ 
+      sender: 'bot', 
+      text: resourceReply, 
+      timestamp: new Date().toISOString() 
     });
-    const data = await res.json();
-    // Try to get the reply from multiple possible locations
-    let reply = '';
-    if (data?.candidates?.[0]?.content?.parts?.[0]?.text) {
-      reply = data.candidates[0].content.parts[0].text;
-    } else if (data?.candidates?.[0]?.content?.parts?.[0]) {
-      reply = data.candidates[0].content.parts[0];
-    } else if (data?.candidates?.[0]?.content?.text) {
-      reply = data.candidates[0].content.text;
+    saveChatHistory();
+    vibeRender();
+    scrollToLatestMessage();
+    
+    // Focus input after response
+    setTimeout(() => {
+      const newInput = document.getElementById('vibe-user-input');
+      if (newInput) {
+        newInput.focus();
+      }
+    }, 100);
+    
+  } catch (error) {
+    console.error('❌ Error in handleSubmit:', error);
+    vibeIsTyping = false;
+    vibeChatHistory.push({
+      sender: 'bot',
+      text: '⚠️ Sorry, I encountered an error. Please try again.',
+      timestamp: new Date().toISOString()
+    });
+    saveChatHistory();
+    vibeRender();
+  }
+}
+
+async function fetchLibraryAndVideo(query) {
+  console.log('📚 Generating library link and YouTube video for:', query);
+  
+  try {
+    // Generate RP Library search link
+    const librarySearchUrl = `https://libopac.rp.edu.sg/client/en_GB/home/search/results?qu=${encodeURIComponent(query).replace(/%20/g, '+')}&rm=HOME0%7C%7C%7C1%7C%7C%7C0%7C%7C%7Ctrue&te=ILS`;
+    
+    // Fetch top 3 YouTube videos for webpage display
+    const youtubeRes = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=3&q=${encodeURIComponent(query)}&key=AIzaSyCtCSDRGHN710uzX6t9faF35pWO8rhpLLY`);
+    
+    if (!youtubeRes.ok) {
+      return `📚 **RP Library Resources**\n\n🔍 I found library resources for "${query}"\n\n💡 Check the RP Library for academic articles, ebooks, and research materials.`;
     }
-    if (!reply) reply = 'Sorry, I could not find an answer.';
-    if (reply.includes('Sorry, I could not find an answer')) {
-      console.log('Gemini full response:', data);
+    
+    const youtubeData = await youtubeRes.json();
+    const videos = youtubeData.items || [];
+    
+    if (videos.length === 0) {
+      return `📚 **RP Library Resources**\n\n🔍 I found library resources for "${query}"\n\n💡 Check the RP Library for academic articles, ebooks, and research materials.`;
     }
-    return reply;
+    
+    // Store query with videos for webpage display
+    const queryData = {
+      query: query,
+      timestamp: new Date().toISOString(),
+      videos: videos
+    };
+    
+    // Add to recent queries (newest first, limit to 5)
+    vibeRecentQueries.unshift(queryData);
+    if (vibeRecentQueries.length > MAX_RECENT_QUERIES) {
+      vibeRecentQueries.pop();
+    }
+    
+    // Save to localStorage
+    try {
+      localStorage.setItem('vibeRecentQueries', JSON.stringify(vibeRecentQueries));
+    } catch (e) {
+      console.warn('Failed to save recent queries:', e);
+    }
+    
+    // Update webpage video section
+    updateWebpageVideoSection();
+    
+    // Return only RP Library link (videos shown on webpage)
+    const response = `📚 **RP Library Resources**\n\n🔍 I found library resources for "${query}"`;
+    
+    return response;
+    
+  } catch (error) {
+    console.error('❌ Failed to fetch resources:', error);
+    return `📚 **RP Library Resources**\n\n🔍 I found library resources for "${query}"\n\n💡 Check the RP Library for academic articles and research materials.`;
+  }
+}
+
+function updateWebpageVideoSection() {
+  const videoSection = document.getElementById('related-videos-section');
+  if (!videoSection) {
+    console.warn('Related videos section not found on webpage');
+    return;
+  }
+  
+  // Check if vibeRecentQueries is empty or null
+  if (!vibeRecentQueries || vibeRecentQueries.length === 0) {
+    console.log('📹 No video history - showing empty state');
+    videoSection.innerHTML = `
+      <div class="no-videos-message">
+        <h3>🎥 Related YouTube Videos</h3>
+        <p>No recent searches yet. Ask the chatbot about any topic to see videos here!</p>
+      </div>
+    `;
+    return; // Early return to prevent further processing
+  }
+  
+  // Always start with clean slate
+  videoSection.innerHTML = '';
+  
+  // Explicitly set ONLY this heading text
+  let videosHTML = '<h3>🎥 Related YouTube Videos</h3>';
+  
+  vibeRecentQueries.forEach((queryData, index) => {
+    const videos = queryData.videos.slice(0, 3);
+    const timeAgo = getTimeAgo(queryData.timestamp);
+    
+    videosHTML += `
+      <div class="vibe-query-section">
+        <div class="vibe-query-header">
+          <h4 class="vibe-query-title">"${queryData.query}"</h4>
+          <span class="vibe-query-time">${timeAgo}</span>
+        </div>
+        <div class="vibe-videos-grid">
+          ${videos.map(video => `
+            <div class="vibe-video-card">
+              <div class="vibe-video-thumbnail">
+                <img src="${video.snippet.thumbnails.medium.url}" alt="${video.snippet.title}" loading="lazy">
+              </div>
+              <h5 class="vibe-video-title">${video.snippet.title}</h5>
+              <p class="vibe-video-description">${video.snippet.description || 'No description available'}</p>
+              <div class="vibe-video-actions">
+                <a href="https://youtube.com/watch?v=${video.id.videoId}" target="_blank" class="vibe-watch-btn">▶️ Watch</a>
+                <button onclick="copyVideoLink('${video.id.videoId}')" class="vibe-copy-btn">📋 Copy</button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  });
+  
+  videoSection.innerHTML = videosHTML;
+  console.log('✅ Video section updated with ONLY "Related YouTube Videos" text');
+}
+
+// Clean video section on page load
+function cleanVideoSection() {
+  const videoSection = document.getElementById('related-videos-section');
+  if (videoSection) {
+    videoSection.innerHTML = `
+      <div class="no-videos-message">
+        <h3>🎥 Related YouTube Videos</h3>
+        <p>No recent searches yet. Ask the chatbot about any topic to see videos here!</p>
+      </div>
+    `;
+  }
+}
+
+// Setup action button handlers using event delegation
+function setupActionButtons() {
+  document.addEventListener('click', (e) => {
+    const button = e.target.closest('.chatbot-button');
+    if (!button) return;
+
+    const action = button.dataset.action;
+    if (!action) return;
+
+    e.preventDefault();
+    console.log('🎯 Action button clicked:', action);
+
+    switch (action) {
+      case 'ai-info':
+        handleAIInfo();
+        break;
+      case 'sa3':
+        window.open('https://mysa.rp.edu.sg', '_blank');
+        break;
+      case 'timer':
+        window.open('https://pomofocus.io', '_blank');
+        break;
+      case 'clear':
+        clearChat();
+        break;
+    }
+  });
+}
+
+// Functions for handling quick actions
+function handleAIInfo() {
+  vibeChatHistory.push({
+    sender: 'bot',
+    text: "I'm your Study Buddy! 🤖\n\n✨ **What I do:**\n• Find RP Library resources for any topic you type\n• Show YouTube videos in the webpage section below\n• Provide quick action buttons for easy access\n\n💡 **How to use:** Just type any study topic (like 'Physics' or 'Programming') and I'll help you find resources!",
+    timestamp: new Date().toISOString()
+  });
+  saveChatHistory();
+  vibeRender();
+  scrollToLatestMessage();
+}
+
+function showWelcomeMessage() {
+  if (!vibeWelcomeShown) {
+    // Add welcome message with example and instructions
+    vibeChatHistory.push({
+      sender: 'bot',
+      text: 'Hi there! I am CampASK, your Study Buddy! 📚\n\nJust type in any topic and I\'ll find RP Library resources for you!\n\n💡 **Example:** Try typing "Linear Regression" or "Machine Learning"\n\n⚠️ **Note:** Please only type in study topics (no questions or sentences)',
+      timestamp: new Date().toISOString()
+    });
+
+    // DO NOT add any action buttons - remove all actionButtons code
+
+    vibeWelcomeShown = true;
+    saveChatHistory();
+    vibeRender();
+    scrollToLatestMessage();
+  }
+}
+
+// Manual function to clear all video history
+function clearVideoHistory() {
+  console.log('🧹 Manually clearing all video history...');
+  
+  // Clear the array
+  vibeRecentQueries = [];
+  
+  // Remove from localStorage
+  try {
+    localStorage.removeItem('vibeRecentQueries');
+    console.log('✅ Video history cleared from localStorage');
   } catch (e) {
-    return 'Sorry, I could not find an answer.';
+    console.warn('Failed to clear video history from localStorage:', e);
   }
+  
+  // Clean the UI
+  forceCleanVideoSection();
+  
+  console.log('✅ Video history completely cleared');
 }
 
-async function fetchYouTube(query) {
-  try {
-    const res = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=3&q=${encodeURIComponent(query)}&key=AIzaSyCtCSDRGHN710uzX6t9faF35pWO8rhpLLY`);
-    const data = await res.json();
-    const section = document.querySelector('.placeholder');
-    if (section) {
-      let html = '<div style="margin-bottom:16px;font-weight:bold;font-size:1.1rem;text-align:center;">Related YouTube Videos:</div>';
-      html += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;justify-items:center;align-items:start;width:100%;max-width:1100px;margin:0 auto;">';
-      for (const item of data.items || []) {
-        html += `<a href="https://youtube.com/watch?v=${item.id.videoId}" target="_blank" style="display:block;width:320px;text-align:center;text-decoration:none;color:#232946;"><img src="${item.snippet.thumbnails.high?.url || item.snippet.thumbnails.medium.url}" alt="${escapeHTML(item.snippet.title)}" style="width:100%;height:200px;object-fit:cover;border-radius:18px;box-shadow:0 4px 18px #0002;margin-bottom:12px;"><div style="font-size:1.18rem;line-height:1.3;font-weight:500;">${escapeHTML(item.snippet.title.slice(0,80))}</div></a>`;
-      }
-      html += '</div>';
-      // Keep previous quiz if present
-      const prevQuiz = section.querySelector('.vibe-quiz-block')?.outerHTML || '';
-      section.innerHTML = html + prevQuiz;
-    }
-  } catch (e) {}
-}
-
-async function fetchQuiz(queries) {
-  try {
-    const prompt = `Generate 3 quiz questions (with answers) based on these topics: ${queries.join(', ')}. Format as HTML <ul> with <li>Q: ...<br>A: ...</li>`;
-    const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyDg2hEi3hNp06jgF1Uy4sCGsV4soF1Asnc', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-    });
-    const data = await res.json();
-    let html = '';
-    if (data?.candidates?.[0]?.content?.parts?.[0]?.text) {
-      html = data.candidates[0].content.parts[0].text;
-    } else if (data?.candidates?.[0]?.content?.parts?.[0]) {
-      html = data.candidates[0].content.parts[0];
-    } else if (data?.candidates?.[0]?.content?.text) {
-      html = data.candidates[0].content.text;
-    }
-    const section = document.querySelector('.placeholder');
-    if (section && html) {
-      // Remove any previous quiz block
-      const prevQuiz = section.querySelector('.vibe-quiz-block');
-      if (prevQuiz) prevQuiz.remove();
-      section.innerHTML += `<div class="vibe-quiz-block" style="margin-top:18px;font-weight:bold;font-size:1.1rem;text-align:center;">Quiz Generator:</div>` + html;
-    }
-  } catch (e) {}
+// Clear chat and reset state
+function clearChat() {
+  localStorage.removeItem('vibeChatHistory');
+  vibeChatHistory = [];
+  vibeWelcomeShown = false;
+  
+  // Also clear video history when clearing chat
+  clearVideoHistory();
+  
+  vibeRender();
+  showWelcomeMessage();
 }
 
 // ===============
 // Init
 // ===============
-document.addEventListener('DOMContentLoaded', () => {
+// Initialize Vibe chatbot
+function initVibeChatbot() {
+  console.log('🚀 Initializing Vibe chatbot...');
+  
+  // Clear any existing handlers first
+  const existingHandlers = document.querySelectorAll('[data-vibe-handler]');
+  existingHandlers.forEach(el => el.removeAttribute('data-vibe-handler'));
+  
+  // Force clean video section
+  forceCleanVideoSection();
+  
+  // Initialize state
+  loadChatHistory();
+  
+  // Setup handlers in correct order
+  setupActionButtons();
+  setupFormHandlers();
+  setupChatControls();
+  
+  // Render and show welcome
   vibeRender();
-});
+  showWelcomeMessage();
+  
+  console.log('✅ Vibe chatbot initialization complete');
+}
 
-// ===============
-// Insert rpRAG object (truncated for brevity)
-// ===============
-// Please paste the full rpRAG object here as per your data
+function setupFormHandlers() {
+  console.log('🔧 Setting up form handlers');
+  
+  // Remove existing event listeners to prevent conflicts
+  const existingHandlers = document.querySelectorAll('[data-vibe-handler]');
+  existingHandlers.forEach(el => {
+    el.removeAttribute('data-vibe-handler');
+  });
+  
+  // Single event listener for form submission
+  document.addEventListener('submit', handleGlobalFormSubmit, { once: false });
+  document.addEventListener('keydown', handleGlobalKeydown, { once: false });
+}
+
+function handleGlobalFormSubmit(e) {
+  if (e.target.closest('#vibe-form')) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('📤 Form submit triggered');
+    handleSubmit();
+    return false;
+  }
+}
+
+function handleGlobalKeydown(e) {
+  if (e.key === 'Enter' && e.target.id === 'vibe-user-input' && !e.shiftKey) {
+    e.preventDefault();
+    console.log('⌨️ Enter key pressed in input');
+    handleSubmit();
+  }
+}
+
+function setupChatControls() {
+  // Setup event listeners with proper delegation
+  document.addEventListener('click', (e) => {
+    const bubble = e.target.closest('#vibe-bubble');
+    const minimise = e.target.closest('#vibe-minimise');
+    const chatbox = e.target.closest('#vibe-chatbox');
+    const chatForm = e.target.closest('#vibe-form');
+
+    // Don't close if clicking inside chatbox or form
+    if (chatbox || chatForm) {
+      e.stopPropagation();
+      return;
+    }
+
+    // Handle bubble and minimize clicks
+    if (bubble) {
+      console.log('🔵 Opening chatbot');
+      vibeChatOpen = true;
+      vibeRender();
+      showWelcomeMessage();
+    } else if (minimise) {
+      console.log('🔵 Minimizing chatbot');
+      vibeChatOpen = false;
+      vibeRender();
+    }
+  });
+
+  // Handle emoji picker clicks
+  document.addEventListener('click', (e) => {
+    if (vibeEmojiPickerOpen && 
+        !e.target.closest('#vibe-emoji-btn') && 
+        !e.target.closest('.emoji-picker')) {
+      vibeEmojiPickerOpen = false;
+      vibeRender();
+    }
+  });
+
+  // Add mobile-friendly styles
+  const styleId = 'vibe-mobile-styles';
+  if (!document.getElementById(styleId)) {
+    const mobileStyles = document.createElement('style');
+    mobileStyles.id = styleId;
+    mobileStyles.innerHTML = `
+      @media screen and (max-width: 600px) {
+        #vibe-chatbox {
+          width: 94vw !important;
+          right: 3vw !important;
+          bottom: 24px !important;
+        }
+        #vibe-bubble {
+          right: 16px !important;
+          bottom: 16px !important;
+        }
+      }
+    `;
+    document.head.appendChild(mobileStyles);
+  }
+
+  console.log('✅ Vibe chatbot initialized successfully');
+}
+
+// Initialize on DOM load with error handling
+document.addEventListener('DOMContentLoaded', () => {
+  // Force clean video section first
+  forceCleanVideoSection();
+  
+  try {
+    initVibeChatbot();
+  } catch (error) {
+    console.error('❌ Failed to initialize Vibe chatbot:', error);
+    // Show error in chat if possible
+    if (typeof vibeRender === 'function' && Array.isArray(vibeChatHistory)) {
+      vibeChatHistory.push({
+        sender: 'bot',
+        text: '⚠️ Chat initialization failed. Please refresh the page.',
+        timestamp: new Date().toISOString()
+      });
+      vibeRender();
+    }
+  }
+  
+  // Double-check cleanup after 1 second to ensure complete reset
+  setTimeout(() => {
+    console.log('🔄 Double-check cleanup running...');
+    if (!vibeRecentQueries || vibeRecentQueries.length === 0) {
+      forceCleanVideoSection();
+      console.log('✅ Double-check completed - video section clean');
+    }
+  }, 1000);
+});
