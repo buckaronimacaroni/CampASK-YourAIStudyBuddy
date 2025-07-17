@@ -906,49 +906,82 @@ function setupChatControls() {
     }
   });
 
-  // 🚀 Mobile-safe touch handling for bubble
+  // 🚀 IMPROVED Mobile-safe touch handling for bubble
   function setupMobileBubbleHandlers() {
     const bubble = document.getElementById('vibe-bubble');
     if (bubble && !bubble.hasAttribute('data-touch-handler')) {
       bubble.setAttribute('data-touch-handler', 'true');
       
-      // Add touchstart for mobile devices
+      // Add touchstart for mobile devices with better event handling
       bubble.addEventListener('touchstart', (e) => {
         e.preventDefault();
         e.stopPropagation();
         console.log('📱 Touch opening chatbot');
+        
+        // Prevent double-triggering by adding a small delay flag
+        if (bubble.hasAttribute('data-touch-processing')) return;
+        bubble.setAttribute('data-touch-processing', 'true');
+        
         vibeChatOpen = true;
         vibeRender();
         showWelcomeMessage();
+        
+        // Clear processing flag after animation
+        setTimeout(() => {
+          bubble.removeAttribute('data-touch-processing');
+        }, 300);
       }, { passive: false });
       
       // Add pointerdown as fallback for various devices
       bubble.addEventListener('pointerdown', (e) => {
-        if (e.pointerType === 'touch') {
+        if (e.pointerType === 'touch' && !bubble.hasAttribute('data-touch-processing')) {
           e.preventDefault();
           e.stopPropagation();
           console.log('👆 Pointer touch opening chatbot');
+          
+          bubble.setAttribute('data-touch-processing', 'true');
           vibeChatOpen = true;
           vibeRender();
           showWelcomeMessage();
+          
+          setTimeout(() => {
+            bubble.removeAttribute('data-touch-processing');
+          }, 300);
         }
       });
+      
+      // Add visual feedback for mobile taps
+      bubble.addEventListener('touchstart', () => {
+        bubble.style.transform = 'scale(0.95)';
+        bubble.style.transition = 'transform 0.1s ease';
+      }, { passive: true });
+      
+      bubble.addEventListener('touchend', () => {
+        bubble.style.transform = 'scale(1)';
+      }, { passive: true });
       
       console.log('✅ Mobile touch handlers added to bubble');
     }
   }
   
-  // Use MutationObserver to detect when bubble is added to DOM
+  // IMPROVED MutationObserver with better performance
   const bubbleObserver = new MutationObserver((mutations) => {
+    let shouldSetup = false;
+    
     mutations.forEach((mutation) => {
       mutation.addedNodes.forEach((node) => {
         if (node.nodeType === 1) { // Element node
-          if (node.id === 'vibe-bubble' || node.querySelector && node.querySelector('#vibe-bubble')) {
-            setupMobileBubbleHandlers();
+          if (node.id === 'vibe-bubble' || (node.querySelector && node.querySelector('#vibe-bubble'))) {
+            shouldSetup = true;
           }
         }
       });
     });
+    
+    if (shouldSetup) {
+      // Debounce multiple rapid calls
+      setTimeout(setupMobileBubbleHandlers, 50);
+    }
   });
   
   // Start observing for bubble creation
@@ -959,7 +992,6 @@ function setupChatControls() {
   
   // Also try immediate setup in case bubble already exists
   setTimeout(setupMobileBubbleHandlers, 100);
-  
   // Handle emoji picker clicks
   document.addEventListener('click', (e) => {
     if (vibeEmojiPickerOpen && 
