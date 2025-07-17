@@ -906,6 +906,60 @@ function setupChatControls() {
     }
   });
 
+  // 🚀 Mobile-safe touch handling for bubble
+  function setupMobileBubbleHandlers() {
+    const bubble = document.getElementById('vibe-bubble');
+    if (bubble && !bubble.hasAttribute('data-touch-handler')) {
+      bubble.setAttribute('data-touch-handler', 'true');
+      
+      // Add touchstart for mobile devices
+      bubble.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('📱 Touch opening chatbot');
+        vibeChatOpen = true;
+        vibeRender();
+        showWelcomeMessage();
+      }, { passive: false });
+      
+      // Add pointerdown as fallback for various devices
+      bubble.addEventListener('pointerdown', (e) => {
+        if (e.pointerType === 'touch') {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log('👆 Pointer touch opening chatbot');
+          vibeChatOpen = true;
+          vibeRender();
+          showWelcomeMessage();
+        }
+      });
+      
+      console.log('✅ Mobile touch handlers added to bubble');
+    }
+  }
+  
+  // Use MutationObserver to detect when bubble is added to DOM
+  const bubbleObserver = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType === 1) { // Element node
+          if (node.id === 'vibe-bubble' || node.querySelector && node.querySelector('#vibe-bubble')) {
+            setupMobileBubbleHandlers();
+          }
+        }
+      });
+    });
+  });
+  
+  // Start observing for bubble creation
+  bubbleObserver.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+  
+  // Also try immediate setup in case bubble already exists
+  setTimeout(setupMobileBubbleHandlers, 100);
+  
   // Handle emoji picker clicks
   document.addEventListener('click', (e) => {
     if (vibeEmojiPickerOpen && 
