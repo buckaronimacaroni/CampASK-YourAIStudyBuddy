@@ -1,4 +1,25 @@
 // =====================
+// BOTPRESS INTEGRATION
+// =====================
+// This file has been updated to use Botpress instead of the custom Vibe chatbot.
+// The following components have been replaced:
+// - Vibe chatbot UI rendering (vibeRender)
+// - Custom chat controls (setupChatControls)
+// - Custom form handlers (setupFormHandlers)
+// - Custom mobile touch handling (setupMobileBubbleHandlers)
+//
+// PRESERVED FUNCTIONALITY:
+// - YouTube video display on webpage (updateWebpageVideoSection)
+// - Video grid functions (getTimeAgo, copyVideoLink, etc.)
+// - Action buttons for webpage interactions (setupActionButtons)
+// - Video history management (vibeRecentQueries)
+//
+// BOTPRESS CHATBOT:
+// - Loads via CDN scripts
+// - Handles all chat interactions
+// - Configured with CampASK Study Buddy branding
+// - Maintains same study topic search functionality
+// =====================
 // Vibe Chatbot UI State
 // =====================
 let vibeChatOpen = false;
@@ -214,6 +235,44 @@ function generateVideoGrid() {
   
   return gridHTML;
 }
+
+// =====================
+// DEPRECATED VIBE CHATBOT FUNCTIONS
+// =====================
+// The following functions are now deprecated and commented out
+// since we're using Botpress instead of the custom Vibe chatbot.
+// They are preserved for reference but no longer used.
+
+//
+// DEPRECATED: Vibe chatbot render function
+// function vibeRender() {
+//   // This function has been replaced by Botpress
+//   console.warn('⚠️ vibeRender() is deprecated - using Botpress instead');
+// }
+
+// DEPRECATED: Vibe form handlers
+// function setupFormHandlers() {
+//   // This function has been replaced by Botpress
+//   console.warn('⚠️ setupFormHandlers() is deprecated - using Botpress instead');
+// }
+
+// DEPRECATED: Vibe chat controls
+// function setupChatControls() {
+//   // This function has been replaced by Botpress
+//   console.warn('⚠️ setupChatControls() is deprecated - using Botpress instead');
+// }
+
+// DEPRECATED: Vibe input handlers
+// function setupInputHandlers() {
+//   // This function has been replaced by Botpress
+//   console.warn('⚠️ setupInputHandlers() is deprecated - using Botpress instead');
+// }
+
+// DEPRECATED: Vibe submit handler
+// async function handleSubmit() {
+//   // This function has been replaced by Botpress
+//   console.warn('⚠️ handleSubmit() is deprecated - using Botpress instead');
+// }
 
 // =====================
 // Vibe Render Engine
@@ -819,11 +878,18 @@ function clearChat() {
 }
 
 // ===============
-// Init
+// Init - REPLACED WITH BOTPRESS
 // ===============
-// Initialize Vibe chatbot
-function initVibeChatbot() {
-  console.log('🚀 Initializing Vibe chatbot...');
+// Initialize Botpress chatbot (replacing Vibe)
+function initBotpressChatbot() {
+  console.log('🚀 Initializing Botpress chatbot...');
+  
+  // Remove any existing Vibe chatbot elements
+  const existingVibeChatbot = document.getElementById('vibe-chatbot-root');
+  if (existingVibeChatbot) {
+    existingVibeChatbot.remove();
+    console.log('✅ Removed existing Vibe chatbot');
+  }
   
   // Clear any existing handlers first
   const existingHandlers = document.querySelectorAll('[data-vibe-handler]');
@@ -832,19 +898,128 @@ function initVibeChatbot() {
   // Force clean video section
   forceCleanVideoSection();
   
-  // Initialize state
-  loadChatHistory();
-  
-  // Setup handlers in correct order
+  // Setup action buttons for webpage (keep existing functionality)
   setupActionButtons();
-  setupFormHandlers();
-  setupChatControls();
   
-  // Render and show welcome
-  vibeRender();
-  showWelcomeMessage();
+    
+  // Inject Botpress scripts
+  injectBotpressScripts();
   
-  console.log('✅ Vibe chatbot initialization complete');
+  console.log('✅ Botpress chatbot initialization complete');
+}
+
+// Inject Botpress chatbot scripts
+function injectBotpressScripts() {
+  console.log('📦 Injecting Botpress scripts...');
+  
+  // Remove existing Botpress scripts to prevent duplicates
+  const existingScripts = document.querySelectorAll('script[src*="botpress"], script[src*="bpcontent"]');
+  existingScripts.forEach(script => script.remove());
+  
+  // Function to inject script
+  const injectScript = (src, id) => {
+    return new Promise((resolve, reject) => {
+      // Check if script already exists
+      if (document.getElementById(id)) {
+        console.log(`✅ Script ${id} already exists`);
+        resolve();
+        return;
+      }
+      
+      const script = document.createElement('script');
+      script.id = id;
+      script.src = src;
+      script.defer = true;
+      
+      script.onload = () => {
+        console.log(`✅ Loaded: ${src}`);
+        resolve();
+      };
+      
+      script.onerror = (error) => {
+        console.error(`❌ Failed to load: ${src}`, error);
+        reject(error);
+      };
+      
+      document.head.appendChild(script);
+    });
+  };
+  
+  // Inject Botpress scripts in sequence
+  injectScript('https://cdn.botpress.cloud/webchat/v3.2/inject.js', 'botpress-inject')
+    .then(() => {
+      return injectScript('https://files.bpcontent.cloud/2025/07/17/01/20250717015330-PKR7XBJJ.js', 'botpress-config');
+    })
+    .then(() => {
+      console.log('✅ All Botpress scripts loaded successfully');
+      
+      // Wait a bit for Botpress to initialize, then configure
+      setTimeout(() => {
+        configureBotpress();
+      }, 1000);
+    })
+    .catch((error) => {
+      console.error('❌ Failed to load Botpress scripts:', error);
+      showBotpressError();
+    });
+}
+
+// Configure Botpress after it loads
+function configureBotpress() {
+  console.log('⚙️ Configuring Botpress...');
+  
+  // Check if Botpress is available
+  if (typeof window.botpress !== 'undefined') {
+    try {
+      // Configure Botpress webchat
+      window.botpress.init({
+        composerPlaceholder: 'Type any study topic...',
+        botName: 'CampASK Study Buddy',
+        botAvatar: '📚',
+        enableReset: true,
+        enableTranscriptDownload: false,
+        className: 'campask-botpress-chat'
+      });
+
+            console.log('✅ Botpress configured successfully');
+    } catch (error) {
+      console.error('❌ Failed to configure Botpress:', error);
+    }
+  } else {
+    console.warn('⚠️ Botpress not yet available, retrying...');
+    setTimeout(configureBotpress, 500);
+  }
+}
+
+// Show error message if Botpress fails to load
+function showBotpressError() {
+  const errorDiv = document.createElement('div');
+  errorDiv.id = 'botpress-error';
+  errorDiv.style.cssText = `
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #ff4444;
+    color: white;
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 9999;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    max-width: 300px;
+  `;
+  errorDiv.innerHTML = `
+    ❌ Chatbot failed to load<br>
+    <small>Please refresh the page to try again</small>
+  `;
+  
+  document.body.appendChild(errorDiv);
+  
+  // Remove error after 5 seconds
+  setTimeout(() => {
+    errorDiv.remove();
+  }, 5000);
 }
 
 function setupFormHandlers() {
@@ -1032,18 +1207,10 @@ document.addEventListener('DOMContentLoaded', () => {
   forceCleanVideoSection();
   
   try {
-    initVibeChatbot();
-  } catch (error) {
-    console.error('❌ Failed to initialize Vibe chatbot:', error);
-    // Show error in chat if possible
-    if (typeof vibeRender === 'function' && Array.isArray(vibeChatHistory)) {
-      vibeChatHistory.push({
-        sender: 'bot',
-        text: '⚠️ Chat initialization failed. Please refresh the page.',
-        timestamp: new Date().toISOString()
-      });
-      vibeRender();
-    }
+// Initialize Botpress chatbot instead of Vibe
+    initBotpressChatbot();  } catch (error) {
+    console.error('❌ Failed to initialize Botpress chatbot:', error);
+    showBotpressError();
   }
   
   // Double-check cleanup after 1 second to ensure complete reset
