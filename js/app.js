@@ -884,16 +884,8 @@ function clearChat() {
 function initBotpressChatbot() {
   console.log('🚀 Initializing Botpress chatbot...');
   
-  // Remove any existing Vibe chatbot elements
-  const existingVibeChatbot = document.getElementById('vibe-chatbot-root');
-  if (existingVibeChatbot) {
-    existingVibeChatbot.remove();
-    console.log('✅ Removed existing Vibe chatbot');
-  }
-  
-  // Clear any existing handlers first
-  const existingHandlers = document.querySelectorAll('[data-vibe-handler]');
-  existingHandlers.forEach(el => el.removeAttribute('data-vibe-handler'));
+  // Clean up old Vibe code first
+  cleanupOldVibeCode();
   
   // Force clean video section
   forceCleanVideoSection();
@@ -980,6 +972,11 @@ function configureBotpress() {
         enableTranscriptDownload: false,
         className: 'campask-botpress-chat'
       });
+
+       // Setup integration after Botpress is ready
+      setTimeout(() => {
+        setupBotpressIntegration();
+      }, 1000);
 
             console.log('✅ Botpress configured successfully');
     } catch (error) {
@@ -1222,3 +1219,150 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, 1000);
 });
+
+
+// =====================
+// BOTPRESS INTEGRATION FIXES
+// =====================
+
+// Add Botpress event listener to handle user messages
+function setupBotpressIntegration() {
+  console.log('🔧 Setting up Botpress integration...');
+  
+  // Wait for Botpress to be available
+  const checkBotpress = setInterval(() => {
+    if (typeof window.botpress !== 'undefined') {
+      clearInterval(checkBotpress);
+      
+      // Listen for Botpress events
+      window.botpress.on('message', (message) => {
+        console.log('📨 Botpress message received:', message);
+        
+        // If it's a user message, process it for YouTube videos
+        if (message.type === 'text' && message.userId) {
+          handleBotpressUserMessage(message.text);
+        }
+      });
+      
+      // Listen for bot messages to add action buttons
+      window.botpress.on('botMessage', (message) => {
+        console.log('🤖 Bot message received:', message);
+        
+        // Check if it's a library resource response
+        if (message.text && message.text.includes('RP Library Resources')) {
+          addActionButtonsToBotpressMessage(message);
+        }
+      });
+      
+      console.log('✅ Botpress integration setup complete');
+    }
+  }, 100);
+}
+
+// Handle user messages from Botpress
+async function handleBotpressUserMessage(userMessage) {
+  console.log('🎯 Processing user message for YouTube:', userMessage);
+  
+  try {
+    // Generate library URL and fetch YouTube videos
+    const librarySearchUrl = `https://libopac.rp.edu.sg/client/en_GB/home/search/results?qu=${encodeURIComponent(userMessage).replace(/%20/g, '+')}&rm=HOME0%7C%7C%7C1%7C%7C%7C0%7C%7C%7Ctrue&te=ILS`;
+    
+    // Fetch YouTube videos
+    const youtubeRes = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=3&q=${encodeURIComponent(userMessage)}&key=AIzaSyCtCSDRGHN710uzX6t9faF35pWO8rhpLLY`);
+    
+    if (youtubeRes.ok) {
+      const youtubeData = await youtubeRes.json();
+      const videos = youtubeData.items || [];
+      
+      // Store query with videos
+      const queryData = {
+        query: userMessage,
+        timestamp: new Date().toISOString(),
+        videos: videos
+      };
+      
+      // Add to recent queries
+      vibeRecentQueries.unshift(queryData);
+      if (vibeRecentQueries.length > MAX_RECENT_QUERIES) {
+        vibeRecentQueries.pop();
+      }
+      
+      // Save to localStorage
+      localStorage.setItem('vibeRecentQueries', JSON.stringify(vibeRecentQueries));
+      
+      // Update webpage video section
+      updateWebpageVideoSection();
+      
+      console.log('✅ YouTube videos updated for:', userMessage);
+    }
+  } catch (error) {
+    console.error('❌ Error processing user message:', error);
+  }
+}
+
+// Add action buttons to Botpress messages
+function addActionButtonsToBotpressMessage(message) {
+  // Extract query from message
+  const queryMatch = message.text.match(/I found library resources for "([^"]+)"/);
+  const query = queryMatch ? queryMatch[1] : 'study topic';
+  
+  // Add buttons to webpage (not to Botpress - use webpage buttons)
+  setTimeout(() => {
+    addWebpageActionButtons(query);
+  }, 500);
+}
+
+// Add action buttons to webpage
+function addWebpageActionButtons(query) {
+  const videoSection = document.getElementById('related-videos-section');
+  if (videoSection) {
+    // Check if buttons already exist
+    if (!videoSection.querySelector('.chatbot-action-buttons')) {
+      const buttonsHTML = `
+        <div class="chatbot-action-buttons" style="margin: 16px 0; display: flex; gap: 12px; flex-wrap: wrap;">
+          <a href="https://libopac.rp.edu.sg/client/en_GB/home/search/results?qu=${encodeURIComponent(query).replace(/%20/g, '+')}&rm=HOME0%7C%7C%7C1%7C%7C%7C0%7C%7C%7Ctrue&te=ILS" 
+             target="_blank" 
+             class="webpage-action-btn library-btn"
+             style="background: #2563EB; color: white; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 500;">
+            📚 Open RP Library
+          </a>
+          <button onclick="openFirstYouTubeVideo('${query}')" 
+                  class="webpage-action-btn video-btn"
+                  style="background: #ef4444; color: white; padding: 8px 16px; border-radius: 8px; border: none; font-size: 14px; font-weight: 500; cursor: pointer;">
+            🎥 Watch YouTube Video
+          </button>
+          <button onclick="scrollToVideosSection()" 
+                  class="webpage-action-btn more-btn"
+                  style="background: #10b981; color: white; padding: 8px 16px; border-radius: 8px; border: none; font-size: 14px; font-weight: 500; cursor: pointer;">
+            📺 More Videos
+          </button>
+        </div>
+      `;
+      
+      // Insert buttons before video content
+      videoSection.insertAdjacentHTML('afterbegin', buttonsHTML);
+    }
+  }
+}
+
+// Clean up old Vibe code - remove deprecated functions
+function cleanupOldVibeCode() {
+  console.log('🧹 Cleaning up old Vibe code...');
+  
+  // Remove any existing Vibe chatbot elements
+  const existingVibeChatbot = document.getElementById('vibe-chatbot-root');
+  if (existingVibeChatbot) {
+    existingVibeChatbot.remove();
+  }
+  
+  // Remove old event listeners
+  const existingHandlers = document.querySelectorAll('[data-vibe-handler]');
+  existingHandlers.forEach(el => el.removeAttribute('data-vibe-handler'));
+  
+  // Clear old chat history
+  vibeChatHistory = [];
+  vibeWelcomeShown = false;
+  vibeChatOpen = false;
+  
+  console.log('✅ Old Vibe code cleaned up');
+}
