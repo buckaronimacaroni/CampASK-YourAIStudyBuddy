@@ -275,144 +275,10 @@ function generateVideoGrid() {
 // }
 
 // =====================
-// Vibe Render Engine
+// DISABLED VIBE FUNCTIONS - REPLACED WITH BOTPRESS
 // =====================
-function vibeRender() {
-  try {
-    let root = document.getElementById('vibe-chatbot-root');
-    if (!root) {
-      root = document.createElement('div');
-      root.id = 'vibe-chatbot-root';
-      document.body.appendChild(root);
-    }
-
-    // Save the action buttons if they exist
-    const existingActions = document.querySelector('.chatbot-actions');
-  
-  root.innerHTML = `
-    <div id="vibe-bubble" style="position:fixed;bottom:32px;right:32px;width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#2563EB,#60A5FA);display:${vibeChatOpen?'none':'flex'};align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(37,99,235,0.18);cursor:pointer;z-index:9999;transition:all 0.3s ease-in-out;transform:scale(1);">
-      <svg width="32" height="32" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#fff" opacity="0.08"/><path d="M7 10h10M7 14h6" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
-    </div>
-    <div id="vibe-chatbox" style="position:fixed;bottom:${vibeChatOpen ? '32px' : '-600px'};right:32px;width:370px;max-width:98vw;height:540px;max-height:98vh;background:#fff;border-radius:18px;box-shadow:0 8px 32px rgba(37,99,235,0.18);display:flex;flex-direction:column;z-index:9999;overflow:hidden;transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);opacity:${vibeChatOpen ? '1' : '0'};">
-      <div style="background:linear-gradient(90deg,#2563EB,#60A5FA);color:#fff;padding:18px 20px 14px 20px;font-size:1.2rem;font-weight:bold;letter-spacing:0.5px;display:flex;align-items:center;justify-content:space-between;">
-        <span>Your Study Buddy</span>
-        <div style="display:flex;gap:12px;align-items:center;">
-          <button onclick="clearChat()" style="background:none;border:none;color:#fff;cursor:pointer;font-size:1.1rem;padding:4px;opacity:0.8;transition:opacity 0.2s;border-radius:4px;" onmouseover="this.style.opacity=1;this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.opacity=0.8;this.style.background='none'" title="Clear Chat">🧹</button>
-          <span id='vibe-minimise' onclick='vibeChatOpen=false;vibeRender();' style='cursor:pointer;font-size:1.3rem;font-weight:normal;transition:opacity 0.2s;opacity:0.8;' title='Minimise' onmouseover='this.style.opacity=1' onmouseout='this.style.opacity=0.8'>−</span>
-        </div>
-      </div>
-      <div id="vibe-messages" style="flex:1;overflow-y:auto;padding:18px 12px 12px 12px;background:#f5f6fa;height:100%;max-height:100%;">
-        ${vibeChatHistory.map(msg => {
-          const time = msg.timestamp ? formatTime(msg.timestamp) : '';
-          if (msg.sender === 'user') {
-            return `<div style="display:flex;justify-content:flex-end;margin-bottom:10px;opacity:1;transform:translateY(0);transition:all 0.3s ease-out;">
-              <div style="max-width:70%;background:#E5E7EB;color:#22223B;padding:12px 18px;border-radius:18px 18px 4px 18px;font-size:1rem;word-break:break-word;transition:transform 0.2s ease-out;position:relative;" onmouseover="this.style.transform='scale(1.01)'" onmouseout="this.style.transform='scale(1)'">
-                ${escapeHTML(msg.text)}
-                <div style="font-size:0.75rem;color:#6B7280;margin-top:4px;text-align:right;">${time}</div>
-              </div>
-            </div>`;
-          } else {
-            let messageContent = msg.text;
-            
-            // Add action buttons to each bot reply (except welcome message)
-            if (!msg.text.includes('Hi there! I am CampASK') && !msg.text.includes('Related YouTube Videos')) {
-              // Extract the query from the message for button links
-              const queryMatch = msg.text.match(/I found library resources for "([^"]+)"/);
-              const query = queryMatch ? queryMatch[1] : 'study topic';
-              
-              messageContent += `
-                <div class="bot-action-buttons">
-                  <a href="https://libopac.rp.edu.sg/client/en_GB/home/search/results?qu=${encodeURIComponent(query).replace(/%20/g, '+')}&rm=HOME0%7C%7C%7C1%7C%7C%7C0%7C%7C%7Ctrue&te=ILS" target="_blank" class="bot-action-btn library-btn">
-                    📚 Open RP Library
-                  </a>
-                  <button onclick="openFirstYouTubeVideo('${query}')" class="bot-action-btn video-btn">
-                    🎥 Watch YouTube Video
-                  </button>
-                  <button onclick="scrollToVideosSection()" class="bot-action-btn more-btn">
-                    📺 More YouTube Videos
-                  </button>
-                </div>
-              `;
-            }
-            
-            return `<div style="display:flex;align-items:flex-end;margin-bottom:14px;opacity:1;transform:translateY(0);transition:all 0.3s ease-out;">
-              <div style="width:28px;height:28px;border-radius:50%;background:#2563EB;display:flex;align-items:center;justify-content:center;margin-right:8px;position:relative;bottom:-8px;transition:transform 0.2s ease-out;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><svg width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#fff" opacity="0.12"/><path d="M12 7a2 2 0 0 1 2 2v1h-4V9a2 2 0 0 1 2-2zm-4 7v-1a4 4 0 0 1 8 0v1a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2z" fill="#fff"/></svg></div>
-              <div class="vibe-bot-msg" style="max-width:70%;background:#1F2937;color:#fff;padding:12px 18px;border-radius:18px 18px 18px 4px;font-size:1rem;word-break:break-word;transition:transform 0.2s ease-out;position:relative;" onmouseover="this.style.transform='scale(1.01)'" onmouseout="this.style.transform='scale(1)'">
-                ${formatBotMessage(messageContent)}
-                <div style="font-size:0.75rem;color:#9CA3AF;margin-top:4px;">${time}</div>
-              </div>
-            </div>`;
-          }
-        }).join('')}
-        ${vibeIsTyping ? `
-          <div style="display:flex;align-items:flex-end;margin-bottom:14px;opacity:1;transform:translateY(0);transition:all 0.3s ease-out;">
-            <div style="width:28px;height:28px;border-radius:50%;background:#2563EB;display:flex;align-items:center;justify-content:center;margin-right:8px;position:relative;bottom:-8px;">
-              <svg width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#fff" opacity="0.12"/><path d="M12 7a2 2 0 0 1 2 2v1h-4V9a2 2 0 0 1 2-2zm-4 7v-1a4 4 0 0 1 8 0v1a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2z" fill="#fff"/></svg>
-            </div>
-            <div style="max-width:70%;background:#1F2937;color:#fff;padding:12px 18px;border-radius:18px 18px 18px 4px;font-size:1rem;">
-              <div style="display:flex;align-items:center;gap:4px;">
-                <span style="width:6px;height:6px;border-radius:50%;background:#fff;opacity:0.6;animation:typing 1s infinite">•</span>
-                <span style="width:6px;height:6px;border-radius:50%;background:#fff;opacity:0.6;animation:typing 1s infinite 0.2s">•</span>
-                <span style="width:6px;height:6px;border-radius:50%;background:#fff;opacity:0.6;animation:typing 1s infinite 0.4s">•</span>
-              </div>
-            </div>
-          </div>
-        ` : ''}
-      </div>
-      <style>
-        @keyframes typing {
-          0%, 100% { opacity: 0.6; }
-          50% { opacity: 1; }
-        }
-        @keyframes scaleIn {
-          from { transform: scale(0.95); opacity: 0; }
-          to { transform: scale(1); opacity: 1; }
-        }
-      </style>
-      <form id="vibe-form" style="display:flex;align-items:center;padding:10px 10px 10px 10px;background:#f3f4f6;border-top:1px solid #e5e7eb;position:relative;">
-        <button type="button" id="vibe-emoji-btn" style="background:none;border:none;outline:none;cursor:pointer;padding:8px;margin-right:4px;display:flex;align-items:center;transition:transform 0.2s ease-out;opacity:0.7;" onmouseover="this.style.opacity=1;this.style.transform='scale(1.1)'" onmouseout="this.style.opacity=0.7;this.style.transform='scale(1)'" onclick="vibeEmojiPickerOpen=!vibeEmojiPickerOpen;vibeRender()">
-          😊
-        </button>
-        ${vibeEmojiPickerOpen ? `
-          <div style="position:absolute;bottom:100%;left:10px;background:white;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);padding:8px;display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:8px;z-index:1000;transform-origin:bottom left;animation:scaleIn 0.2s ease-out;">
-            ${quickEmojis.map(emoji => `
-              <button type="button" onclick="handleEmojiClick('${emoji}')" style="background:none;border:none;outline:none;cursor:pointer;padding:6px;border-radius:6px;transition:all 0.2s;font-size:1.2rem;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">${emoji}</button>
-            `).join('')}
-          </div>
-        ` : ''}
-        <input id="vibe-user-input" type="text" autocomplete="off" placeholder="Ask me anything..." style="flex:1;padding:10px 14px;border-radius:12px;border:none;background:#fff;font-size:1rem;outline:none;box-shadow:0 1px 4px rgba(37,99,235,0.04);margin-right:8px;transition:box-shadow 0.2s ease-out;" onmouseover="this.style.boxShadow='0 2px 8px rgba(37,99,235,0.08)'" onmouseout="this.style.boxShadow='0 1px 4px rgba(37,99,235,0.04)'"/>
-        <button id="vibe-send-btn" type="submit" style="background:none;border:none;outline:none;cursor:pointer;padding:0 8px;display:flex;align-items:center;transition:transform 0.2s ease-out;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-          <svg width="28" height="28" viewBox="0 0 24 24"><path d="M3 20l18-8-18-8v6l12 2-12 2z" fill="${document.getElementById('vibe-user-input')&&document.getElementById('vibe-user-input').value? '#2563EB':'#9CA3AF'}" style="transition:fill 0.2s ease-out;"/></svg>
-        </button>
-      </form>
-      <div id="vibe-emoji-picker" style="position:absolute;bottom:100%;right:10px;width=300px;background:#fff;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.2);display:${vibeEmojiPickerOpen ? 'block' : 'none'};z-index:10000;padding:10px;transition:opacity 0.3s ease-out, transform 0.3s ease-out;transform:translateY(${vibeEmojiPickerOpen ? '0' : '10px'});opacity:${vibeEmojiPickerOpen ? '1' : '0'};">
-        <div style="display:flex;flex-wrap:wrap;gap:8px;">
-          ${quickEmojis.map(emoji => `<div style="font-size:1.5rem;cursor:pointer;" title="Insert ${emoji}" onclick="handleEmojiClick('${emoji}')">${emoji}</div>`).join('')}
-        </div>
-      </div>
-    </div>
-  `;
-
-  // Reinsert the action buttons if they existed
-  if (existingActions) {
-    const messagesContainer = document.getElementById('vibe-messages');
-    const firstMessage = messagesContainer.querySelector('.vibe-bot-msg');
-    if (firstMessage) {
-      firstMessage.parentNode.after(existingActions);
-    }
-  }
-  
-  // Setup input handlers after render
-  setupInputHandlers();
-  
-  } catch (error) {
-    console.error('❌ Error in vibeRender:', error);
-    // Fallback minimal render
-    let root = document.getElementById('vibe-chatbot-root');
-    if (root) {
-      root.innerHTML = '<div style="color: red; padding: 20px;">Chatbot render error. Please refresh.</div>';
-    }
-  }
+  console.warn('⚠️ vibeRender() is disabled - using Botpress instead');
+  return;
 }
 
 function openFirstYouTubeVideo(query) {
@@ -428,55 +294,9 @@ function openFirstYouTubeVideo(query) {
   }
 }
 
-function scrollToVideosSection() {
-  const videoSection = document.getElementById('related-videos-section');
-  if (videoSection) {
-    videoSection.scrollIntoView({ 
-      behavior: 'smooth', 
-      block: 'start' 
-    });
-    videoSection.classList.add('highlight-section');
-    setTimeout(() => {
-      videoSection.classList.remove('highlight-section');
-    }, 2000);
-  } else {
-    alert('Please scroll down to see the "Related YouTube Videos" section on this page!');
-  }
-}
-
 function setupInputHandlers() {
-  setTimeout(() => {
-    const input = document.getElementById('vibe-user-input');
-    const sendBtn = document.getElementById('vibe-send-btn');
-    
-    if (input && !input.hasAttribute('data-vibe-handler')) {
-      console.log('🎯 Setting up input handlers for:', input.id);
-      
-      // Mark as handled to prevent duplicate listeners
-      input.setAttribute('data-vibe-handler', 'true');
-      
-      // Focus the input
-      input.focus();
-      
-      // Simple input handler for send button color
-      input.addEventListener('input', (e) => {
-        console.log('📝 Input value changed:', e.target.value);
-        updateSendButtonColor(e.target.value);
-      });
-      
-      console.log('✅ Input handlers set successfully');
-    }
-    
-    // Handle send button clicks
-    if (sendBtn && !sendBtn.hasAttribute('data-vibe-handler')) {
-      sendBtn.setAttribute('data-vibe-handler', 'true');
-      sendBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        console.log('🖱️ Send button clicked');
-        handleSubmit();
-      });
-    }
-  }, 50);
+  console.warn('⚠️ setupInputHandlers() is disabled - using Botpress instead');
+  return;
 }
 
 function updateSendButtonColor(value) {
@@ -587,75 +407,8 @@ function scrollToLatestMessage() {
 // Chatbot Logic
 // =====================
 async function handleSubmit() {
-  console.log('🚀 handleSubmit called');
-  
-  const input = document.getElementById('vibe-user-input');
-  if (!input) {
-    console.error('❌ Input field not found');
-    return;
-  }
-  
-  const userMsg = input.value?.trim();
-  if (!userMsg) {
-    console.log('⚠️ Empty message, not sending');
-    return;
-  }
-  
-  console.log('📤 User message:', userMsg);
-
-  // Clear input immediately
-  input.value = '';
-  
-  // Save user message
-  vibeChatHistory.push({ 
-    sender: 'user', 
-    text: userMsg, 
-    timestamp: new Date().toISOString() 
-  });
-  saveChatHistory();
-  vibeRender();
-  scrollToLatestMessage();
-  
-  // Show typing indicator
-  vibeIsTyping = true;
-  vibeRender();
-
-  try {
-    // Generate response
-    console.log('📚 Generating response...');
-    const resourceReply = await fetchLibraryAndVideo(userMsg);
-    console.log('📨 Response generated:', resourceReply);
-    
-    // Hide typing and show response
-    vibeIsTyping = false;
-    vibeChatHistory.push({ 
-      sender: 'bot', 
-      text: resourceReply, 
-      timestamp: new Date().toISOString() 
-    });
-    saveChatHistory();
-    vibeRender();
-    scrollToLatestMessage();
-    
-    // Focus input after response
-    setTimeout(() => {
-      const newInput = document.getElementById('vibe-user-input');
-      if (newInput) {
-        newInput.focus();
-      }
-    }, 100);
-    
-  } catch (error) {
-    console.error('❌ Error in handleSubmit:', error);
-    vibeIsTyping = false;
-    vibeChatHistory.push({
-      sender: 'bot',
-      text: '⚠️ Sorry, I encountered an error. Please try again.',
-      timestamp: new Date().toISOString()
-    });
-    saveChatHistory();
-    vibeRender();
-  }
+  console.warn('⚠️ handleSubmit() is disabled - using Botpress instead');
+  return;
 }
 
 async function fetchLibraryAndVideo(query) {
@@ -1020,17 +773,8 @@ function showBotpressError() {
 }
 
 function setupFormHandlers() {
-  console.log('🔧 Setting up form handlers');
-  
-  // Remove existing event listeners to prevent conflicts
-  const existingHandlers = document.querySelectorAll('[data-vibe-handler]');
-  existingHandlers.forEach(el => {
-    el.removeAttribute('data-vibe-handler');
-  });
-  
-  // Single event listener for form submission
-  document.addEventListener('submit', handleGlobalFormSubmit, { once: false });
-  document.addEventListener('keydown', handleGlobalKeydown, { once: false });
+  console.warn('⚠️ setupFormHandlers() is disabled - using Botpress instead');
+  return;
 }
 
 function handleGlobalFormSubmit(e) {
@@ -1052,151 +796,9 @@ function handleGlobalKeydown(e) {
 }
 
 function setupChatControls() {
-  // Setup event listeners with proper delegation
-  document.addEventListener('click', (e) => {
-    const bubble = e.target.closest('#vibe-bubble');
-    const minimise = e.target.closest('#vibe-minimise');
-    const chatbox = e.target.closest('#vibe-chatbox');
-    const chatForm = e.target.closest('#vibe-form');
-
-    // Don't close if clicking inside chatbox or form
-    if (chatbox || chatForm) {
-      e.stopPropagation();
+  console.warn('⚠️ setupChatControls() is disabled - using Botpress instead');
       return;
     }
-
-    // Handle bubble and minimize clicks
-    if (bubble) {
-      console.log('🔵 Opening chatbot');
-      vibeChatOpen = true;
-      vibeRender();
-      showWelcomeMessage();
-    } else if (minimise) {
-      console.log('🔵 Minimizing chatbot');
-      vibeChatOpen = false;
-      vibeRender();
-    }
-  });
-
-  // 🚀 IMPROVED Mobile-safe touch handling for bubble
-  function setupMobileBubbleHandlers() {
-    const bubble = document.getElementById('vibe-bubble');
-    if (bubble && !bubble.hasAttribute('data-touch-handler')) {
-      bubble.setAttribute('data-touch-handler', 'true');
-      
-      // Add touchstart for mobile devices with better event handling
-      bubble.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log('📱 Touch opening chatbot');
-        
-        // Prevent double-triggering by adding a small delay flag
-        if (bubble.hasAttribute('data-touch-processing')) return;
-        bubble.setAttribute('data-touch-processing', 'true');
-        
-        vibeChatOpen = true;
-        vibeRender();
-        showWelcomeMessage();
-        
-        // Clear processing flag after animation
-        setTimeout(() => {
-          bubble.removeAttribute('data-touch-processing');
-        }, 300);
-      }, { passive: false });
-      
-      // Add pointerdown as fallback for various devices
-      bubble.addEventListener('pointerdown', (e) => {
-        if (e.pointerType === 'touch' && !bubble.hasAttribute('data-touch-processing')) {
-          e.preventDefault();
-          e.stopPropagation();
-          console.log('👆 Pointer touch opening chatbot');
-          
-          bubble.setAttribute('data-touch-processing', 'true');
-          vibeChatOpen = true;
-          vibeRender();
-          showWelcomeMessage();
-          
-          setTimeout(() => {
-            bubble.removeAttribute('data-touch-processing');
-          }, 300);
-        }
-      });
-      
-      // Add visual feedback for mobile taps
-      bubble.addEventListener('touchstart', () => {
-        bubble.style.transform = 'scale(0.95)';
-        bubble.style.transition = 'transform 0.1s ease';
-      }, { passive: true });
-      
-      bubble.addEventListener('touchend', () => {
-        bubble.style.transform = 'scale(1)';
-      }, { passive: true });
-      
-      console.log('✅ Mobile touch handlers added to bubble');
-    }
-  }
-  
-  // IMPROVED MutationObserver with better performance
-  const bubbleObserver = new MutationObserver((mutations) => {
-    let shouldSetup = false;
-    
-    mutations.forEach((mutation) => {
-      mutation.addedNodes.forEach((node) => {
-        if (node.nodeType === 1) { // Element node
-          if (node.id === 'vibe-bubble' || (node.querySelector && node.querySelector('#vibe-bubble'))) {
-            shouldSetup = true;
-          }
-        }
-      });
-    });
-    
-    if (shouldSetup) {
-      // Debounce multiple rapid calls
-      setTimeout(setupMobileBubbleHandlers, 50);
-    }
-  });
-  
-  // Start observing for bubble creation
-  bubbleObserver.observe(document.body, {
-    childList: true,
-    subtree: true
-  });
-  
-  // Also try immediate setup in case bubble already exists
-  setTimeout(setupMobileBubbleHandlers, 100);
-  // Handle emoji picker clicks
-  document.addEventListener('click', (e) => {
-    if (vibeEmojiPickerOpen && 
-        !e.target.closest('#vibe-emoji-btn') && 
-        !e.target.closest('.emoji-picker')) {
-      vibeEmojiPickerOpen = false;
-      vibeRender();
-    }
-  });
-
-  // Add mobile-friendly styles
-  const styleId = 'vibe-mobile-styles';
-  if (!document.getElementById(styleId)) {
-    const mobileStyles = document.createElement('style');
-    mobileStyles.id = styleId;
-    mobileStyles.innerHTML = `
-      @media screen and (max-width: 600px) {
-        #vibe-chatbox {
-          width: 94vw !important;
-          right: 3vw !important;
-          bottom: 24px !important;
-        }
-        #vibe-bubble {
-          right: 16px !important;
-          bottom: 16px !important;
-        }
-      }
-    `;
-    document.head.appendChild(mobileStyles);
-  }
-
-  console.log('✅ Vibe chatbot initialized successfully');
-}
 
 // Initialize on DOM load with error handling
 document.addEventListener('DOMContentLoaded', () => {
@@ -1229,34 +831,66 @@ document.addEventListener('DOMContentLoaded', () => {
 function setupBotpressIntegration() {
   console.log('🔧 Setting up Botpress integration...');
   
-  // Wait for Botpress to be available
+  // Wait for Botpress webchat to be available
   const checkBotpress = setInterval(() => {
-    if (typeof window.botpress !== 'undefined') {
-      clearInterval(checkBotpress);
+    // Check for either window.botpressWebChat or window.botpress
+    const webChat = window.botpressWebChat || window.botpress;
+    
+    if (webChat) {
+    clearInterval(checkBotpress);
+      console.log('🎯 Botpress webchat detected, setting up listeners...');
       
-      // Listen for Botpress events
-      window.botpress.on('message', (message) => {
-        console.log('📨 Botpress message received:', message);
-        
-        // If it's a user message, process it for YouTube videos
-        if (message.type === 'text' && message.userId) {
-          handleBotpressUserMessage(message.text);
+      try {
+        // Method 1: Try onEvent API (most common)
+        if (webChat.onEvent) {
+          webChat.onEvent((event) => {
+            console.log('📨 Botpress event received:', event);
+            
+            // Check for user message events
+            if (event.type === 'message' && event.payload?.type === 'text') {
+              const userMessage = event.payload.text;
+              if (userMessage) {
+                console.log('👤 User message detected:', userMessage);
+                handleBotpressUserMessage(userMessage);
+              }
         }
       });
-      
-      // Listen for bot messages to add action buttons
-      window.botpress.on('botMessage', (message) => {
-        console.log('🤖 Bot message received:', message);
+
+    }
         
-        // Check if it's a library resource response
-        if (message.text && message.text.includes('RP Library Resources')) {
-          addActionButtonsToBotpressMessage(message);
+        // Method 2: Try addEventListener fallback
+        else if (webChat.addEventListener) {
+          webChat.addEventListener('message', (event) => {
+            console.log('📨 Botpress message event:', event);
+            
+            if (event.detail?.type === 'text' && event.detail?.userId) {
+              handleBotpressUserMessage(event.detail.text);
+            }
+          });
+        }
+        
+        // Method 3: Try direct on() method
+        else if (webChat.on) {
+          webChat.on('message', (message) => {
+            console.log('📨 Botpress on() message:', message);
+            
+            if (message.type === 'text' && message.userId) {
+              handleBotpressUserMessage(message.text);
         }
       });
-      
+    }
       console.log('✅ Botpress integration setup complete');
+    } catch (error) {
+      console.error('❌ Error setting up Botpress integration:', error);
+    }
     }
   }, 100);
+
+  // Timeout after 10 seconds
+  setTimeout(() => {
+    clearInterval(checkBotpress);
+    console.warn('⚠️ Botpress integration setup timed out');
+  }, 10000);
 }
 
 // Handle user messages from Botpress
@@ -1330,11 +964,6 @@ function addWebpageActionButtons(query) {
                   class="webpage-action-btn video-btn"
                   style="background: #ef4444; color: white; padding: 8px 16px; border-radius: 8px; border: none; font-size: 14px; font-weight: 500; cursor: pointer;">
             🎥 Watch YouTube Video
-          </button>
-          <button onclick="scrollToVideosSection()" 
-                  class="webpage-action-btn more-btn"
-                  style="background: #10b981; color: white; padding: 8px 16px; border-radius: 8px; border: none; font-size: 14px; font-weight: 500; cursor: pointer;">
-            📺 More Videos
           </button>
         </div>
       `;
